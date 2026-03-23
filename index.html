@@ -942,7 +942,7 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { useState, useMemo } = React;
+    const { useState, useMemo, useEffect } = React;
     // CSS-based chart component (no external charting lib needed)
     const CSSBarChart = ({ data, maxVal }) => {
       const max = maxVal || Math.max(...data.map(d => Math.max(d.revenue || 0, d.target || 0)));
@@ -1182,12 +1182,56 @@
       return <span className={`badge-inline badge-${variant}`}>{text}</span>;
     }
 
+    // ─── LocalStorage Persistence ───
+    const STORAGE_KEY = "bungee-tracker-state";
+
+    function loadSavedState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return null;
+        return JSON.parse(saved);
+      } catch (e) { return null; }
+    }
+
+    function mergeWithDefaults(saved) {
+      if (!saved || !saved.phases) return PHASES;
+      // Merge saved task states (done, note) into the default PHASES structure
+      // so new tasks added in code updates still appear
+      return PHASES.map((phase, pi) => {
+        const savedPhase = saved.phases[pi];
+        if (!savedPhase) return phase;
+        return {
+          ...phase,
+          tasks: phase.tasks.map(task => {
+            const savedTask = savedPhase.tasks
+              ? savedPhase.tasks.find(t => t.id === task.id)
+              : null;
+            if (!savedTask) return task;
+            return { ...task, done: savedTask.done || false, note: savedTask.note || "" };
+          })
+        };
+      });
+    }
+
     function App() {
-      const [phases, setPhases] = useState(PHASES);
-      const [expandedPhase, setExpandedPhase] = useState(0);
-      const [activeTab, setActiveTab] = useState("overview");
+      const saved = loadSavedState();
+      const [phases, setPhases] = useState(() => mergeWithDefaults(saved));
+      const [expandedPhase, setExpandedPhase] = useState(saved?.expandedPhase ?? 0);
+      const [activeTab, setActiveTab] = useState(saved?.activeTab || "overview");
       const [editingNote, setEditingNote] = useState(null);
       const [noteDraft, setNoteDraft] = useState("");
+
+      // Save state to localStorage whenever it changes
+      React.useEffect(() => {
+        const state = {
+          phases: phases.map(p => ({
+            tasks: p.tasks.map(t => ({ id: t.id, done: t.done, note: t.note }))
+          })),
+          expandedPhase,
+          activeTab
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }, [phases, expandedPhase, activeTab]);
 
       const stats = useMemo(() => {
         let total = 0;
