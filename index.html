@@ -1108,21 +1108,24 @@
         price: "Free",
         sub: "Forever",
         highlight: false,
+        comingSoon: false,
         features: ["Unlimited route quotes", "1 cost profile", "1 yard", "1 team member", "30-day quote history", "AI chatbot", "3-tier pricing advice"],
       },
       {
         name: "Pro",
-        price: "$29",
-        sub: "/month",
+        price: "$15",
+        sub: "/month (USD)",
         highlight: true,
-        features: ["Everything in Free", "Unlimited cost profiles & yards", "Up to 5 team members", "Unlimited quote history", "Branded Quote PDFs", "Accessorial charges", "Quote status tracking", "Live fuel prices", "Lane rate intelligence", "Priority support"],
+        comingSoon: false,
+        features: ["Everything in Free", "Unlimited cost profiles & yards", "Up to 5 team members", "Unlimited quote history", "Custom pricing advice", "Accessorial charges", "Fav lanes", "Priority support"],
       },
       {
         name: "Fleet",
         price: "$79",
-        sub: "/month",
+        sub: "/month (USD)",
         highlight: false,
-        features: ["Everything in Pro", "Unlimited team members", "Customer quote portal", "Multi-truck dispatch view", "Accounting export", "Border crossing module", "API access", "Dedicated support"],
+        comingSoon: true,
+        features: ["Everything in Pro", "Unlimited team members", "Customer quote portal", "Multi-truck dispatch view", "Accounting export", "Border crossing module", "Quote status tracking", "Live fuel prices", "Lane rate intelligence", "API access", "Dedicated support"],
       },
     ];
 
@@ -1565,8 +1568,9 @@
                 <SectionHeader icon={Icons.Target} title="Pricing Tiers" />
                 <div className="grid grid-3">
                   {PRICING_TIERS.map((tier, idx) => (
-                    <div key={idx} className={`pricing-card ${tier.highlight ? "popular" : ""}`}>
+                    <div key={idx} className={`pricing-card ${tier.highlight ? "popular" : ""}`} style={tier.comingSoon ? {opacity: 0.75} : {}}>
                       {tier.highlight && <div className="pricing-popular-badge">Most Popular</div>}
+                      {tier.comingSoon && <div className="pricing-popular-badge" style={{background: "#8A8785"}}>Coming Soon</div>}
                       <div className="pricing-name">{tier.name}</div>
                       <div className="pricing-price">{tier.price}</div>
                       <div className="pricing-price-label">{tier.sub}</div>

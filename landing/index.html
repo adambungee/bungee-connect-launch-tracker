@@ -172,6 +172,9 @@
   .pricing-btn.primary:hover { background: var(--orange-hover); }
   .pricing-btn.secondary { background: var(--gray-50); color: var(--charcoal); border: 1px solid var(--gray-200); }
   .pricing-btn.secondary:hover { background: var(--gray-100); }
+  .pricing-btn:disabled { background: var(--gray-100); color: var(--gray-400); border: 1px solid var(--gray-200); cursor: not-allowed; opacity: 0.65; }
+  .pricing-btn:disabled:hover { background: var(--gray-100); }
+  .pricing-card.coming-soon { opacity: 0.75; }
 
   /* ─── CTA ─── */
   .cta-section { padding: 80px 0; background: var(--charcoal); text-align: center; }
@@ -421,31 +424,38 @@
       </div>
       <div class="pricing-card featured">
         <div class="pricing-name">Pro</div>
-        <div class="pricing-price">$29<span> /month</span></div>
-        <div class="pricing-desc">For growing fleets that need more power and branded quotes.</div>
+        <div class="pricing-price">$15<span> /month</span></div>
+        <div class="pricing-desc">For growing fleets that need more flexibility and custom pricing.</div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Everything in Free</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Unlimited profiles & yards</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Branded Quote PDFs</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Live fuel prices</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Lane rate intelligence</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Unlimited cost profiles & yards</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Up to 5 team members</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Unlimited quote history</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Custom pricing advice</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Accessorial charges</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Fav lanes</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Priority support</li>
         </ul>
-        <button class="pricing-btn primary">Start Pro — $29/mo</button>
+        <button class="pricing-btn primary">Start Pro — $15/mo</button>
       </div>
-      <div class="pricing-card">
+      <div class="pricing-card coming-soon">
         <div class="pricing-name">Fleet</div>
         <div class="pricing-price">$79<span> /month</span></div>
-        <div class="pricing-desc">For fleets needing dispatch, portal, and integrations.</div>
+        <div class="pricing-desc">For fleets needing dispatch, portal, and integrations. Coming soon.</div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Everything in Pro</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Unlimited team members</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Customer quote portal</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Multi-truck dispatch</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Multi-truck dispatch view</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Accounting export</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Border crossing module</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Quote status tracking</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Live fuel prices</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Lane rate intelligence</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>API access</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Dedicated support</li>
         </ul>
-        <button class="pricing-btn secondary">Contact Sales</button>
+        <button class="pricing-btn secondary" disabled>Coming Soon</button>
       </div>
     </div>
   </div>

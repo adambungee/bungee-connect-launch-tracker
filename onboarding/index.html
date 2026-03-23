@@ -261,6 +261,14 @@
       <label class="form-label">Company Name <span class="req">*</span></label>
       <input class="form-input" type="text" placeholder="Smith Trucking Inc.">
     </div>
+    <div class="form-group">
+      <label class="form-label">Country <span class="req">*</span></label>
+      <select class="form-input form-select" id="countrySelect" onchange="updateRegions()">
+        <option value="US" selected>United States</option>
+        <option value="CA">Canada</option>
+        <option value="MX">Mexico</option>
+      </select>
+    </div>
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Fleet Size</label>
@@ -274,27 +282,48 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Province / State</label>
-        <select class="form-input form-select">
-          <option>Ontario</option>
-          <option>Quebec</option>
-          <option>British Columbia</option>
-          <option>Alberta</option>
-          <option>Manitoba</option>
-          <option>Saskatchewan</option>
-          <option>Other Canada</option>
-          <option>Michigan</option>
-          <option>Ohio</option>
-          <option>Illinois</option>
+        <label class="form-label" id="regionLabel">State</label>
+        <select class="form-input form-select" id="regionSelect">
+          <option>California</option>
           <option>Texas</option>
-          <option>Other US</option>
+          <option>Florida</option>
+          <option>Illinois</option>
+          <option>Ohio</option>
+          <option>Michigan</option>
+          <option>New York</option>
+          <option>Pennsylvania</option>
+          <option>Georgia</option>
+          <option>North Carolina</option>
+          <option>New Jersey</option>
+          <option>Indiana</option>
+          <option>Tennessee</option>
+          <option>Missouri</option>
+          <option>Wisconsin</option>
+          <option>Other US State</option>
         </select>
       </div>
     </div>
     <div class="form-group">
       <label class="form-label">Base Yard Address</label>
-      <input class="form-input" type="text" placeholder="123 Industrial Blvd, Mississauga, ON">
+      <input class="form-input" type="text" placeholder="123 Industrial Blvd, Dallas, TX">
       <div class="form-helper">Used to auto-calculate deadhead miles on every quote</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Preferred Currency</label>
+        <select class="form-input form-select" id="currencySelect">
+          <option value="USD" selected>USD ($) — US Dollar</option>
+          <option value="CAD">CAD ($) — Canadian Dollar</option>
+          <option value="MXN">MXN ($) — Mexican Peso</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Unit of Measure</label>
+        <select class="form-input form-select" id="unitSelect">
+          <option value="imperial" selected>Miles / Gallons (US Standard)</option>
+          <option value="metric">Kilometers / Liters (Metric)</option>
+        </select>
+      </div>
     </div>
 
     <div class="card-actions">
@@ -541,6 +570,33 @@
   function selectEquip(el) {
     document.querySelectorAll('.equip-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
+  }
+
+  function updateRegions() {
+    const country = document.getElementById('countrySelect').value;
+    const regionSelect = document.getElementById('regionSelect');
+    const regionLabel = document.getElementById('regionLabel');
+    const currencySelect = document.getElementById('currencySelect');
+    const unitSelect = document.getElementById('unitSelect');
+
+    let options = '';
+    if (country === 'US') {
+      regionLabel.textContent = 'State';
+      options = '<option>California</option><option>Texas</option><option>Florida</option><option>Illinois</option><option>Ohio</option><option>Michigan</option><option>New York</option><option>Pennsylvania</option><option>Georgia</option><option>North Carolina</option><option>New Jersey</option><option>Indiana</option><option>Tennessee</option><option>Missouri</option><option>Wisconsin</option><option>Other US State</option>';
+      currencySelect.value = 'USD';
+      unitSelect.value = 'imperial';
+    } else if (country === 'CA') {
+      regionLabel.textContent = 'Province';
+      options = '<option>Ontario</option><option>Quebec</option><option>British Columbia</option><option>Alberta</option><option>Manitoba</option><option>Saskatchewan</option><option>Nova Scotia</option><option>New Brunswick</option><option>Other Province</option>';
+      currencySelect.value = 'CAD';
+      unitSelect.value = 'metric';
+    } else if (country === 'MX') {
+      regionLabel.textContent = 'State';
+      options = '<option>Estado de Mexico</option><option>Jalisco</option><option>Nuevo Leon</option><option>Guanajuato</option><option>Chihuahua</option><option>Other State</option>';
+      currencySelect.value = 'MXN';
+      unitSelect.value = 'metric';
+    }
+    regionSelect.innerHTML = options;
   }
 </script>
 </body>
