@@ -155,7 +155,7 @@
   .pricing-card { padding: 32px 28px; border-radius: var(--radius-lg); border: 1px solid var(--gray-100); transition: all 0.25s ease; position: relative; }
   .pricing-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
   .pricing-card.featured { border: 2px solid var(--orange); }
-  .pricing-card.featured::before { content: 'MOST POPULAR'; position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--orange); color: white; font-size: 10px; font-weight: 700; padding: 4px 14px; border-radius: 0 0 var(--radius-sm) var(--radius-sm); letter-spacing: 1px; }
+  .pricing-card.featured::before { content: '14-DAY FREE TRIAL'; position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--orange); color: white; font-size: 10px; font-weight: 700; padding: 4px 14px; border-radius: 0 0 var(--radius-sm) var(--radius-sm); letter-spacing: 1px; }
   .pricing-name { font-size: 18px; font-weight: 700; color: var(--charcoal); margin-bottom: 4px; }
   .pricing-price { font-size: 42px; font-weight: 900; color: var(--charcoal); letter-spacing: -2px; margin-bottom: 4px; }
   .pricing-card.featured .pricing-price { color: var(--orange); }
@@ -400,8 +400,8 @@
 <section class="pricing" id="pricing">
   <div class="container" style="text-align:center;">
     <div class="section-label" style="justify-content:center;">Pricing</div>
-    <h2 class="section-title" style="margin-left:auto;margin-right:auto;">Start Free. Upgrade When You're Ready.</h2>
-    <p class="section-sub" style="margin-left:auto;margin-right:auto;">The core quoting tool is free forever. Premium features unlock as your fleet grows.</p>
+    <h2 class="section-title" style="margin-left:auto;margin-right:auto;">Start Free. Try Standard for 14 Days.</h2>
+    <p class="section-sub" style="margin-left:auto;margin-right:auto;">The core quoting tool is free forever. Every new user gets a 14-day Standard trial — no credit card required.</p>
     <div class="pricing-grid">
       <div class="pricing-card">
         <div class="pricing-name">Free</div>
@@ -417,9 +417,9 @@
         <button class="pricing-btn secondary">Get Started Free</button>
       </div>
       <div class="pricing-card featured">
-        <div class="pricing-name">Pro</div>
+        <div class="pricing-name">Standard</div>
         <div class="pricing-price">$15<span> /month</span></div>
-        <div class="pricing-desc">For growing fleets that need more flexibility and custom pricing.</div>
+        <div class="pricing-desc" style="font-weight:500;">Or $120/year (save 33%) — includes 14-day free trial</div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Everything in Free</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Unlimited cost profiles & yards</li>
@@ -430,14 +430,14 @@
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Fav lanes</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Priority support</li>
         </ul>
-        <button class="pricing-btn primary">Start Pro — $15/mo</button>
+        <button class="pricing-btn primary">Start 14-Day Free Trial</button>
       </div>
       <div class="pricing-card coming-soon">
-        <div class="pricing-name">Fleet</div>
-        <div class="pricing-price">$79<span> /month</span></div>
-        <div class="pricing-desc">For fleets needing dispatch, portal, and integrations. Coming soon.</div>
+        <div class="pricing-name">Pro</div>
+        <div class="pricing-price" style="font-size:28px;letter-spacing:0;">Coming Soon</div>
+        <div class="pricing-desc">For fleets needing dispatch, portal, and integrations.</div>
         <ul class="pricing-features">
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Everything in Pro</li>
+          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Everything in Standard</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Unlimited team members</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Customer quote portal</li>
           <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Multi-truck dispatch view</li>
@@ -459,9 +459,9 @@
 <section class="cta-section" id="signup">
   <div class="container">
     <h2>Ready to Quote with Confidence?</h2>
-    <p>Join thousands of North American carriers who are done guessing. Set up in 5 minutes — no credit card required.</p>
+    <p>Join thousands of North American carriers who are done guessing. Start with a 14-day Standard trial — no credit card required.</p>
     <div class="cta-buttons">
-      <a href="#" class="btn btn-primary btn-lg">Sign Up Free</a>
+      <a href="#" class="btn btn-primary btn-lg">Start Your Free Trial</a>
       <a href="#" class="btn btn-white btn-lg">Watch Demo</a>
     </div>
   </div>
