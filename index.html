@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bungee Connect - Launch Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+  <script src="https://unpkg.com/lucide-react@0.383.0/dist/umd/lucide-react.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0F3460;
+      color: #E8E8E8;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: #E8611A;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #E8E8E8;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(232, 97, 26, 0.2);
+      border: 1px solid rgba(232, 97, 26, 0.4);
+      color: #F4845F;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .progress-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .progress-ring {
+      position: relative;
+      width: 120px;
+      height: 120px;
+    }
+
+    .progress-ring-svg {
+      transform: rotate(-90deg);
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .progress-percentage {
+      font-size: 32px;
+      font-weight: 700;
+      color: #E8611A;
+      display: block;
+    }
+
+    .progress-label {
+      font-size: 12px;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .progress-info {
+      display: flex;
+      gap: 30px;
+    }
+
+    .progress-stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .progress-stat-label {
+      font-size: 12px;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .progress-stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #E8E8E8;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(232, 97, 26, 0.1);
+      padding-bottom: 0;
+    }
+
+    .tab-button {
+      background: none;
+      border: none;
+      color: #9CA3AF;
+      padding: 12px 0;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .tab-button:hover {
+      color: #F4845F;
+    }
+
+    .tab-button.active {
+      color: #E8611A;
+    }
+
+    .tab-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #E8611A;
+    }
+
+    /* Card Styles */
+    .card {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card.stat {
+      text-align: center;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      color: #E8611A;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #E8E8E8;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    /* Section Header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      margin-top: 30px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #E8E8E8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title svg {
+      color: #E8611A;
+    }
+
+    /* Callout Box */
+    .callout {
+      background: rgba(232, 97, 26, 0.08);
+      border: 1px solid rgba(232, 97, 26, 0.2);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .callout-icon {
+      color: #E8611A;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .callout-content {
+      flex: 1;
+    }
+
+    .callout-title {
+      font-weight: 600;
+      color: #E8E8E8;
+      margin-bottom: 4px;
+    }
+
+    .callout-text {
+      font-size: 14px;
+      color: #9CA3AF;
+    }
+
+    /* Phase Cards */
+    .phase-card {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .phase-card:hover {
+      border-color: rgba(232, 97, 26, 0.3);
+      background: #1a2a4a;
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .phase-title {
+      font-weight: 600;
+      color: #E8E8E8;
+    }
+
+    .phase-badge {
+      display: inline-block;
+      background: rgba(232, 97, 26, 0.2);
+      border: 1px solid rgba(232, 97, 26, 0.4);
+      color: #F4845F;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .phase-progress {
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(232, 97, 26, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: #E8611A;
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+
+    .progress-text-small {
+      font-size: 12px;
+      color: #9CA3AF;
+      margin-top: 4px;
+    }
+
+    /* Timeline */
+    .timeline-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .timeline-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+    }
+
+    .timeline-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      right: -50%;
+      height: 2px;
+      background: rgba(232, 97, 26, 0.2);
+      z-index: 0;
+    }
+
+    .timeline-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #16213E;
+      border: 2px solid rgba(232, 97, 26, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      color: #E8611A;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+
+    .timeline-label {
+      font-size: 12px;
+      color: #9CA3AF;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* Accordion */
+    .accordion-item {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      padding: 16px;
+      background: #1a2a4a;
+      border-bottom: 1px solid rgba(232, 97, 26, 0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.2s;
+    }
+
+    .accordion-header:hover {
+      background: #1f3450;
+    }
+
+    .accordion-title {
+      font-weight: 600;
+      color: #E8E8E8;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .accordion-icon {
+      color: #E8611A;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .accordion-content {
+      padding: 16px;
+      display: none;
+    }
+
+    .accordion-content.open {
+      display: block;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(232, 97, 26, 0.05);
+      border-radius: 6px;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+    }
+
+    .task-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(232, 97, 26, 0.3);
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .task-checkbox:hover {
+      border-color: #E8611A;
+    }
+
+    .task-checkbox.checked {
+      background: #E8611A;
+      border-color: #E8611A;
+    }
+
+    .task-checkbox.checked svg {
+      color: white;
+      width: 14px;
+      height: 14px;
+    }
+
+    .task-content {
+      flex: 1;
+    }
+
+    .task-text {
+      color: #E8E8E8;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .task-text.done {
+      color: #9CA3AF;
+      text-decoration: line-through;
+    }
+
+    .task-controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .task-button {
+      background: rgba(232, 97, 26, 0.2);
+      border: 1px solid rgba(232, 97, 26, 0.3);
+      color: #F4845F;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .task-button:hover {
+      background: rgba(232, 97, 26, 0.3);
+      border-color: rgba(232, 97, 26, 0.5);
+    }
+
+    .task-note {
+      font-size: 12px;
+      color: #9CA3AF;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 8px;
+      border-radius: 4px;
+      border-left: 2px solid #E8611A;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+
+    .note-editor {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .note-textarea {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(232, 97, 26, 0.3);
+      border-radius: 4px;
+      color: #E8E8E8;
+      padding: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      resize: vertical;
+      min-height: 60px;
+      max-height: 150px;
+    }
+
+    .note-textarea:focus {
+      outline: none;
+      border-color: #E8611A;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .note-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .note-button {
+      flex: 1;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .note-button.save {
+      background: #E8611A;
+      color: white;
+    }
+
+    .note-button.save:hover {
+      background: #D85515;
+    }
+
+    .note-button.cancel {
+      background: rgba(232, 97, 26, 0.1);
+      color: #F4845F;
+      border: 1px solid rgba(232, 97, 26, 0.3);
+    }
+
+    .note-button.cancel:hover {
+      background: rgba(232, 97, 26, 0.2);
+    }
+
+    /* Pricing Cards */
+    .pricing-card {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      padding: 24px;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .pricing-card:hover {
+      border-color: rgba(232, 97, 26, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .pricing-card.popular {
+      border-color: #E8611A;
+      background: #1a2f4a;
+    }
+
+    .pricing-popular-badge {
+      position: absolute;
+      top: -12px;
+      right: 20px;
+      background: #E8611A;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .pricing-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #E8E8E8;
+      margin-bottom: 8px;
+    }
+
+    .pricing-price {
+      font-size: 32px;
+      font-weight: 700;
+      color: #E8611A;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price-label {
+      font-size: 12px;
+      color: #9CA3AF;
+      margin-bottom: 20px;
+    }
+
+    .pricing-features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pricing-feature {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #E8E8E8;
+    }
+
+    .pricing-feature svg {
+      color: #10B981;
+      flex-shrink: 0;
+    }
+
+    /* Chart Container */
+    .chart-container {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      width: 100%;
+      height: 400px;
+    }
+
+    /* Badge */
+    .badge-inline {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-left: 8px;
+    }
+
+    .badge-critical {
+      background: rgba(239, 68, 68, 0.2);
+      color: #EF4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .badge-high {
+      background: rgba(245, 158, 11, 0.2);
+      color: #F59E0B;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-medium {
+      background: rgba(59, 130, 246, 0.2);
+      color: #3B82F6;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .badge-low {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10B981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Risk Card */
+    .risk-card {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .risk-title {
+      font-weight: 600;
+      color: #E8E8E8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .risk-description {
+      font-size: 13px;
+      color: #9CA3AF;
+      margin-bottom: 12px;
+    }
+
+    .risk-badges {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Feature Grid */
+    .feature-item {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(232, 97, 26, 0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #E8611A;
+      flex-shrink: 0;
+    }
+
+    .feature-text {
+      font-size: 13px;
+      color: #E8E8E8;
+    }
+
+    /* Gap Item */
+    .gap-item {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .gap-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #EF4444;
+      flex-shrink: 0;
+    }
+
+    .gap-text {
+      font-size: 13px;
+      color: #E8E8E8;
+    }
+
+    /* KPI Card */
+    .kpi-card {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .kpi-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      color: #E8611A;
+    }
+
+    .kpi-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #E8E8E8;
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #E8611A;
+      margin-bottom: 4px;
+    }
+
+    .kpi-target {
+      font-size: 12px;
+      color: #9CA3AF;
+    }
+
+    /* Summary Cards */
+    .summary-card {
+      background: #16213E;
+      border: 1px solid rgba(232, 97, 26, 0.1);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #E8611A;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(232, 97, 26, 0.1);
+      text-align: center;
+      color: #9CA3AF;
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .progress-section {
+        flex-direction: column;
+      }
+
+      .timeline-steps {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .timeline-step:not(:last-child)::after {
+        display: none;
+      }
+
+      .tabs {
+        flex-wrap: wrap;
+      }
+
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+    const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } = window.Recharts;
+    const { Rocket, Target, TrendingUp, Users, CheckCircle, AlertTriangle, ChevronDown, ChevronRight, DollarSign, Truck, Shield, BarChart3, Calendar, Zap, Globe, CheckSquare, Square, MessageSquare, X, Save } = window.lucideReact;
+
+    const BRAND = {
+      orange: "#E8611A",
+      orangeLight: "#F4845F",
+      orangeBg: "rgba(232, 97, 26, 0.08)",
+      orangeBorder: "rgba(232, 97, 26, 0.2)",
+      dark: "#1A1A2E",
+      darkCard: "#16213E",
+      darkSurface: "#0F3460",
+      text: "#E8E8E8",
+      textMuted: "#9CA3AF",
+      green: "#10B981",
+      yellow: "#F59E0B",
+      red: "#EF4444",
+      blue: "#3B82F6",
+    };
+
+    const MARKET_STATS = [
+      { icon: Truck, label: "Target Market", value: "50K+ Operators" },
+      { icon: DollarSign, label: "TAM", value: "$2.5B" },
+      { icon: Users, label: "Early Users", value: "500+" },
+      { icon: Rocket, label: "Growth Rate", value: "25% MoM" },
+    ];
+
+    const PHASES = [
+      {
+        name: "Phase 1: Pre-Launch",
+        week: "Weeks 1-4",
+        tasks: [
+          { id: "t1", text: "Complete MVP design", done: false, note: "" },
+          { id: "t2", text: "Set up infrastructure", done: false, note: "" },
+          { id: "t3", text: "Implement core features", done: false, note: "" },
+          { id: "t4", text: "Create beta signup form", done: false, note: "" },
+          { id: "t5", text: "Finalize pricing strategy", done: false, note: "" },
+          { id: "t6", text: "Recruit beta testers", done: false, note: "" },
+          { id: "t7", text: "Set up analytics", done: false, note: "" },
+          { id: "t8", text: "Complete security audit", done: false, note: "" },
+          { id: "t9", text: "Build user documentation", done: false, note: "" },
+          { id: "t10", text: "Create marketing materials", done: false, note: "" },
+        ]
+      },
+      {
+        name: "Phase 2: Soft Launch",
+        week: "Weeks 5-8",
+        tasks: [
+          { id: "t11", text: "Deploy beta to testers", done: false, note: "" },
+          { id: "t12", text: "Monitor system performance", done: false, note: "" },
+          { id: "t13", text: "Gather user feedback", done: false, note: "" },
+          { id: "t14", text: "Fix critical bugs", done: false, note: "" },
+          { id: "t15", text: "Optimize onboarding flow", done: false, note: "" },
+          { id: "t16", text: "Test payment processing", done: false, note: "" },
+          { id: "t17", text: "Launch beta support channel", done: false, note: "" },
+          { id: "t18", text: "Refine product messaging", done: false, note: "" },
+          { id: "t19", text: "Conduct beta user interviews", done: false, note: "" },
+          { id: "t20", text: "Prepare public launch plan", done: false, note: "" },
+        ]
+      },
+      {
+        name: "Phase 3: Full Launch",
+        week: "Weeks 9-12",
+        tasks: [
+          { id: "t21", text: "Go live to general public", done: false, note: "" },
+          { id: "t22", text: "Execute marketing campaign", done: false, note: "" },
+          { id: "t23", text: "Launch PR outreach", done: false, note: "" },
+          { id: "t24", text: "Scale support team", done: false, note: "" },
+          { id: "t25", text: "Monitor market response", done: false, note: "" },
+          { id: "t26", text: "Optimize conversion funnel", done: false, note: "" },
+          { id: "t27", text: "Collect first month metrics", done: false, note: "" },
+          { id: "t28", text: "Plan Phase 4 initiatives", done: false, note: "" },
+        ]
+      },
+      {
+        name: "Phase 4: Growth",
+        week: "Weeks 13+",
+        tasks: [
+          { id: "t29", text: "Scale infrastructure", done: false, note: "" },
+          { id: "t30", text: "Expand team capacity", done: false, note: "" },
+          { id: "t31", text: "Launch mobile app", done: false, note: "" },
+          { id: "t32", text: "Add integrations", done: false, note: "" },
+          { id: "t33", text: "Develop advanced features", done: false, note: "" },
+          { id: "t34", text: "Expand to new markets", done: false, note: "" },
+          { id: "t35", text: "Build partner program", done: false, note: "" },
+          { id: "t36", text: "Establish thought leadership", done: false, note: "" },
+          { id: "t37", text: "Optimize unit economics", done: false, note: "" },
+          { id: "t38", text: "Plan Series A fundraising", done: false, note: "" },
+        ]
+      }
+    ];
+
+    const REVENUE_DATA = [
+      { year: "2026", revenue: 0, target: 500 },
+      { year: "2027", revenue: 2400, target: 8000 },
+      { year: "2028", revenue: 5600, target: 18000 },
+    ];
+
+    const KPI_TARGETS = [
+      { name: "Users", value: "5K", target: "50K" },
+      { name: "ARR", value: "$150K", target: "$5M" },
+      { name: "Churn", value: "8%", target: "<3%" },
+      { name: "CAC", value: "$150", target: "<$100" },
+      { name: "LTV", value: "$2.4K", target: ">$1K" },
+      { name: "NPS", value: "42", target: ">50" },
+      { name: "Retention", value: "85%", target: ">90%" },
+      { name: "Engagement", value: "62%", target: ">75%" },
+    ];
+
+    const RISKS = [
+      {
+        title: "Market Adoption",
+        description: "Target market may be slower to adopt new platforms",
+        likelihood: "High",
+        impact: "Critical"
+      },
+      {
+        title: "Competition",
+        description: "Established players may enter the space with superior resources",
+        likelihood: "Medium",
+        impact: "Critical"
+      },
+      {
+        title: "Regulatory Changes",
+        description: "Industry regulations could impact business model",
+        likelihood: "Medium",
+        impact: "High"
+      },
+      {
+        title: "Technical Challenges",
+        description: "Scaling infrastructure faster than anticipated costs",
+        likelihood: "Medium",
+        impact: "Medium"
+      },
+      {
+        title: "Team Retention",
+        description: "Key team members leave during critical phases",
+        likelihood: "Low",
+        impact: "High"
+      }
+    ];
+
+    const PRICING_TIERS = [
+      {
+        name: "Free",
+        price: 0,
+        description: "Perfect for getting started",
+        features: [
+          "Up to 3 trips per month",
+          "Basic tracking",
+          "Email support",
+          "Community access"
+        ]
+      },
+      {
+        name: "Pro",
+        price: 29,
+        description: "For active operators",
+        popular: true,
+        features: [
+          "Unlimited trips",
+          "Advanced analytics",
+          "Mobile app access",
+          "Priority support",
+          "Custom branding",
+          "API access"
+        ]
+      },
+      {
+        name: "Fleet",
+        price: 79,
+        description: "For operation teams",
+        features: [
+          "Everything in Pro",
+          "Manage unlimited operators",
+          "Team analytics",
+          "24/7 phone support",
+          "Custom integrations",
+          "Dedicated account manager"
+        ]
+      }
+    ];
+
+    const EXISTING_FEATURES = [
+      { icon: Shield, text: "Safety Monitoring" },
+      { icon: Target, text: "Real-time Tracking" },
+      { icon: BarChart3, text: "Analytics Dashboard" },
+      { icon: Calendar, text: "Schedule Management" },
+      { icon: Users, text: "Team Collaboration" },
+      { icon: Globe, text: "Multi-location Support" },
+      { icon: Zap, text: "Mobile Integration" },
+      { icon: TrendingUp, text: "Performance Metrics" },
+      { icon: CheckCircle, text: "Status Notifications" },
+      { icon: Rocket, text: "Quick Deployment" },
+    ];
+
+    const CRITICAL_GAPS = [
+      { text: "Advanced AI-powered safety predictions" },
+      { text: "Blockchain verification for operator credentials" },
+      { text: "Automated insurance claim processing" },
+      { text: "Real-time regulatory compliance checking" },
+      { text: "Predictive maintenance scheduling" },
+    ];
+
+    function StatCard({ icon: Icon, label, value }) {
+      return (
+        <div className="card stat">
+          <div className="stat-icon">
+            <Icon size={24} />
+          </div>
+          <div className="stat-label">{label}</div>
+          <div className="stat-value">{value}</div>
+        </div>
+      );
+    }
+
+    function SectionHeader({ icon: Icon, title }) {
+      return (
+        <div className="section-header">
+          <h2 className="section-title">
+            <Icon size={20} />
+            {title}
+          </h2>
+        </div>
+      );
+    }
+
+    function ProgressBar({ percentage }) {
+      return (
+        <div className="progress-bar">
+          <div className="progress-bar-fill" style={{ width: `${percentage}%` }} />
+        </div>
+      );
+    }
+
+    function Badge({ text, variant = "default" }) {
+      return <span className={`badge-inline badge-${variant}`}>{text}</span>;
+    }
+
+    function App() {
+      const [phases, setPhases] = useState(PHASES);
+      const [expandedPhase, setExpandedPhase] = useState(0);
+      const [activeTab, setActiveTab] = useState("overview");
+      const [editingNote, setEditingNote] = useState(null);
+      const [noteDraft, setNoteDraft] = useState("");
+
+      const stats = useMemo(() => {
+        let total = 0;
+        let done = 0;
+        phases.forEach(phase => {
+          phase.tasks.forEach(task => {
+            total++;
+            if (task.done) done++;
+          });
+        });
+        return {
+          total,
+          done,
+          percentage: Math.round((done / total) * 100)
+        };
+      }, [phases]);
+
+      const toggleTask = (phaseIndex, taskId) => {
+        setPhases(phases.map((phase, idx) => {
+          if (idx === phaseIndex) {
+            return {
+              ...phase,
+              tasks: phase.tasks.map(task =>
+                task.id === taskId ? { ...task, done: !task.done } : task
+              )
+            };
+          }
+          return phase;
+        }));
+      };
+
+      const openNoteEditor = (phaseIndex, taskId) => {
+        const task = phases[phaseIndex].tasks.find(t => t.id === taskId);
+        setEditingNote({ phaseIndex, taskId });
+        setNoteDraft(task.note || "");
+      };
+
+      const saveNote = () => {
+        if (editingNote) {
+          setPhases(phases.map((phase, idx) => {
+            if (idx === editingNote.phaseIndex) {
+              return {
+                ...phase,
+                tasks: phase.tasks.map(task =>
+                  task.id === editingNote.taskId ? { ...task, note: noteDraft } : task
+                )
+              };
+            }
+            return phase;
+          }));
+          setEditingNote(null);
+          setNoteDraft("");
+        }
+      };
+
+      const cancelNote = () => {
+        setEditingNote(null);
+        setNoteDraft("");
+      };
+
+      const handleNoteKeyDown = (e) => {
+        if (e.ctrlKey && e.key === 'Enter') {
+          saveNote();
+        }
+        if (e.key === 'Escape') {
+          cancelNote();
+        }
+      };
+
+      const getPhaseProgress = (phase) => {
+        const total = phase.tasks.length;
+        const done = phase.tasks.filter(t => t.done).length;
+        return Math.round((done / total) * 100);
+      };
+
+      return (
+        <div style={{ background: BRAND.darkSurface, minHeight: "100vh" }}>
+          <div className="container">
+            {/* Header */}
+            <div className="header">
+              <div className="header-content">
+                <div className="logo-section">
+                  <div className="logo">BC</div>
+                  <h1 className="title">LAUNCH TRACKER</h1>
+                  <span className="badge">Live</span>
+                </div>
+              </div>
+
+              <div className="progress-section">
+                <div className="progress-ring">
+                  <svg className="progress-ring-svg" width="120" height="120" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="54" fill="none" stroke={BRAND.orangeBorder} strokeWidth="4" />
+                    <circle
+                      cx="60"
+                      cy="60"
+                      r="54"
+                      fill="none"
+                      stroke={BRAND.orange}
+                      strokeWidth="4"
+                      strokeDasharray={`${(stats.percentage / 100) * 339.3} 339.3`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="progress-text">
+                    <span className="progress-percentage">{stats.percentage}%</span>
+                    <span className="progress-label">Complete</span>
+                  </div>
+                </div>
+
+                <div className="progress-info">
+                  <div className="progress-stat">
+                    <div className="progress-stat-label">Total Tasks</div>
+                    <div className="progress-stat-value">{stats.total}</div>
+                  </div>
+                  <div className="progress-stat">
+                    <div className="progress-stat-label">Completed</div>
+                    <div className="progress-stat-value">{stats.done}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Tabs */}
+            <div className="tabs">
+              <button
+                className={`tab-button ${activeTab === "overview" ? "active" : ""}`}
+                onClick={() => setActiveTab("overview")}
+              >
+                Overview
+              </button>
+              <button
+                className={`tab-button ${activeTab === "timeline" ? "active" : ""}`}
+                onClick={() => setActiveTab("timeline")}
+              >
+                Timeline & Tasks
+              </button>
+              <button
+                className={`tab-button ${activeTab === "monetization" ? "active" : ""}`}
+                onClick={() => setActiveTab("monetization")}
+              >
+                Monetization
+              </button>
+              <button
+                className={`tab-button ${activeTab === "kpis" ? "active" : ""}`}
+                onClick={() => setActiveTab("kpis")}
+              >
+                KPIs & Risks
+              </button>
+            </div>
+
+            {/* Overview Tab */}
+            {activeTab === "overview" && (
+              <div>
+                <SectionHeader icon={Target} title="Market Opportunity" />
+                <div className="grid grid-4">
+                  {MARKET_STATS.map((stat, idx) => (
+                    <StatCard key={idx} icon={stat.icon} label={stat.label} value={stat.value} />
+                  ))}
+                </div>
+
+                <div className="callout">
+                  <AlertTriangle className="callout-icon" size={20} />
+                  <div className="callout-content">
+                    <div className="callout-title">Key Insight</div>
+                    <div className="callout-text">
+                      The bungee jumping market is underserved with digital solutions. Operators are managing logistics with fragmented tools, creating a $2.5B TAM opportunity.
+                    </div>
+                  </div>
+                </div>
+
+                <SectionHeader icon={Calendar} title="Launch Phases" />
+                <div className="grid grid-2">
+                  {phases.map((phase, idx) => (
+                    <div
+                      key={idx}
+                      className="phase-card"
+                      onClick={() => setActiveTab("timeline")}
+                    >
+                      <div className="phase-header">
+                        <h3 className="phase-title">{phase.name}</h3>
+                        <span className="phase-badge">{phase.week}</span>
+                      </div>
+                      <div className="phase-progress">
+                        <ProgressBar percentage={getPhaseProgress(phase)} />
+                        <div className="progress-text-small">
+                          {phase.tasks.filter(t => t.done).length}/{phase.tasks.length} tasks
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <SectionHeader icon={CheckCircle} title="Existing Features" />
+                <div className="grid grid-3">
+                  {EXISTING_FEATURES.map((feature, idx) => (
+                    <div key={idx} className="feature-item">
+                      <div className="feature-icon">
+                        <feature.icon size={18} />
+                      </div>
+                      <div className="feature-text">{feature.text}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <SectionHeader icon={AlertTriangle} title="Critical Gaps" />
+                <div className="grid grid-2">
+                  {CRITICAL_GAPS.map((gap, idx) => (
+                    <div key={idx} className="gap-item">
+                      <div className="gap-icon">
+                        <X size={18} />
+                      </div>
+                      <div className="gap-text">{gap.text}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Timeline Tab */}
+            {activeTab === "timeline" && (
+              <div>
+                <div className="timeline-steps">
+                  {phases.map((phase, idx) => (
+                    <div key={idx} className="timeline-step">
+                      <div className="timeline-dot">{idx + 1}</div>
+                      <div className="timeline-label">{phase.name.split(":")[0]}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  {phases.map((phase, phaseIdx) => (
+                    <div key={phaseIdx} className="accordion-item">
+                      <div
+                        className="accordion-header"
+                        onClick={() => setExpandedPhase(expandedPhase === phaseIdx ? -1 : phaseIdx)}
+                      >
+                        <div className="accordion-title">
+                          <ChevronRight
+                            className="accordion-icon"
+                            size={20}
+                            style={{ transform: expandedPhase === phaseIdx ? "rotate(90deg)" : "rotate(0deg)" }}
+                          />
+                          <span>{phase.name}</span>
+                          <span style={{ marginLeft: "auto", fontSize: "12px", color: BRAND.textMuted }}>
+                            {phase.tasks.filter(t => t.done).length}/{phase.tasks.length} complete
+                          </span>
+                        </div>
+                      </div>
+                      <div className={`accordion-content ${expandedPhase === phaseIdx ? "open" : ""}`}>
+                        <div className="task-list">
+                          {phase.tasks.map((task) => (
+                            <div key={task.id} className="task-item">
+                              <div
+                                className={`task-checkbox ${task.done ? "checked" : ""}`}
+                                onClick={() => toggleTask(phaseIdx, task.id)}
+                              >
+                                {task.done && <CheckCircle size={16} />}
+                              </div>
+                              <div className="task-content">
+                                <div className={`task-text ${task.done ? "done" : ""}`}>{task.text}</div>
+                                <div className="task-controls">
+                                  <button
+                                    className="task-button"
+                                    onClick={() => openNoteEditor(phaseIdx, task.id)}
+                                  >
+                                    {task.note ? "Edit Note" : "Add Note"}
+                                  </button>
+                                </div>
+                                {editingNote?.phaseIndex === phaseIdx && editingNote?.taskId === task.id ? (
+                                  <div className="note-editor">
+                                    <textarea
+                                      className="note-textarea"
+                                      value={noteDraft}
+                                      onChange={(e) => setNoteDraft(e.target.value)}
+                                      onKeyDown={handleNoteKeyDown}
+                                      placeholder="Add a note... (Ctrl+Enter to save, Esc to cancel)"
+                                      autoFocus
+                                    />
+                                    <div className="note-buttons">
+                                      <button className="note-button save" onClick={saveNote}>
+                                        <Save size={14} style={{ display: "inline", marginRight: "4px" }} />
+                                        Save
+                                      </button>
+                                      <button className="note-button cancel" onClick={cancelNote}>
+                                        <X size={14} style={{ display: "inline", marginRight: "4px" }} />
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </div>
+                                ) : task.note ? (
+                                  <div className="task-note">{task.note}</div>
+                                ) : null}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Monetization Tab */}
+            {activeTab === "monetization" && (
+              <div>
+                <div className="callout">
+                  <DollarSign className="callout-icon" size={20} />
+                  <div className="callout-content">
+                    <div className="callout-title">Core Principle</div>
+                    <div className="callout-text">
+                      Simple, transparent pricing that scales with operator operations. Free tier builds adoption, Pro for serious operators, Fleet for team management.
+                    </div>
+                  </div>
+                </div>
+
+                <SectionHeader icon={Target} title="Pricing Tiers" />
+                <div className="grid grid-3">
+                  {PRICING_TIERS.map((tier, idx) => (
+                    <div key={idx} className={`pricing-card ${tier.popular ? "popular" : ""}`}>
+                      {tier.popular && <div className="pricing-popular-badge">Most Popular</div>}
+                      <div className="pricing-name">{tier.name}</div>
+                      <div className="pricing-price">{tier.price === 0 ? "Free" : `$${tier.price}`}</div>
+                      <div className="pricing-price-label">{tier.price === 0 ? "Forever" : "per month"}</div>
+                      <div className="pricing-features">
+                        {tier.features.map((feature, idx) => (
+                          <div key={idx} className="pricing-feature">
+                            <CheckCircle size={16} />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <SectionHeader icon={TrendingUp} title="Revenue Projections" />
+                <div className="chart-container">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={REVENUE_DATA}>
+                      <CartesianGrid strokeDasharray="3 3" stroke={BRAND.orangeBorder} />
+                      <XAxis dataKey="year" stroke={BRAND.textMuted} />
+                      <YAxis stroke={BRAND.textMuted} />
+                      <Tooltip
+                        contentStyle={{
+                          background: BRAND.darkCard,
+                          border: `1px solid ${BRAND.orangeBorder}`,
+                          borderRadius: "4px",
+                          color: BRAND.text
+                        }}
+                      />
+                      <Bar dataKey="revenue" fill={BRAND.orange} name="Actual Revenue" radius={[8, 8, 0, 0]}>
+                        {REVENUE_DATA.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={BRAND.orange} />
+                        ))}
+                      </Bar>
+                      <Bar dataKey="target" fill={BRAND.orangeBorder} name="Target Revenue" radius={[8, 8, 0, 0]} opacity={0.5}>
+                        {REVENUE_DATA.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={BRAND.orangeBorder} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <SectionHeader icon={BarChart3} title="Annual Summary" />
+                <div className="grid grid-3">
+                  {REVENUE_DATA.map((year, idx) => (
+                    <div key={idx} className="summary-card">
+                      <div className="summary-label">Year {year.year.slice(-2)}</div>
+                      <div className="summary-value">${(year.revenue).toLocaleString()}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* KPIs & Risks Tab */}
+            {activeTab === "kpis" && (
+              <div>
+                <div className="callout">
+                  <Target className="callout-icon" size={20} />
+                  <div className="callout-content">
+                    <div className="callout-title">Success Metrics</div>
+                    <div className="callout-text">
+                      These KPIs track product-market fit, unit economics, and operational health. Measured monthly and reviewed with stakeholders.
+                    </div>
+                  </div>
+                </div>
+
+                <SectionHeader icon={TrendingUp} title="Key Performance Indicators" />
+                <div className="grid grid-4">
+                  {KPI_TARGETS.map((kpi, idx) => (
+                    <div key={idx} className="kpi-card">
+                      <div className="kpi-icon">
+                        <Zap size={20} />
+                      </div>
+                      <div className="kpi-name">{kpi.name}</div>
+                      <div className="kpi-value">{kpi.value}</div>
+                      <div className="kpi-target">Target: {kpi.target}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <SectionHeader icon={AlertTriangle} title="Risk Assessment" />
+                <div className="grid grid-2">
+                  {RISKS.map((risk, idx) => (
+                    <div key={idx} className="risk-card">
+                      <div className="risk-title">
+                        <Shield size={18} />
+                        {risk.title}
+                      </div>
+                      <div className="risk-description">{risk.description}</div>
+                      <div className="risk-badges">
+                        <Badge
+                          text={`Likelihood: ${risk.likelihood}`}
+                          variant={risk.likelihood === "High" ? "critical" : risk.likelihood === "Medium" ? "high" : "medium"}
+                        />
+                        <Badge
+                          text={`Impact: ${risk.impact}`}
+                          variant={risk.impact === "Critical" ? "critical" : risk.impact === "High" ? "high" : "medium"}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="callout" style={{ marginTop: "30px", borderColor: BRAND.yellow + "40", background: "rgba(245, 158, 11, 0.08)" }}>
+                  <AlertTriangle className="callout-icon" size={20} style={{ color: BRAND.yellow }} />
+                  <div className="callout-content">
+                    <div className="callout-title">Feature Creep Warning</div>
+                    <div className="callout-text">
+                      Prioritize core operator experience over advanced features. Secondary features should only launch after achieving 80% retention and positive NPS.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Footer */}
+            <div className="footer">
+              <p>© 2026 Bungee Connect. All rights reserved. Built for the extreme sports community.</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
+</html>
