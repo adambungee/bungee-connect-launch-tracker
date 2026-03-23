@@ -976,187 +976,149 @@
     };
 
     const MARKET_STATS = [
-      { icon: Icons.Truck, label: "Target Market", value: "50K+ Operators" },
-      { icon: Icons.DollarSign, label: "TAM", value: "$2.5B" },
-      { icon: Icons.Users, label: "Early Users", value: "500+" },
-      { icon: Icons.Rocket, label: "Growth Rate", value: "25% MoM" },
+      { icon: Icons.Truck, label: "Motor Carriers in NA", value: "2.1M+" },
+      { icon: Icons.DollarSign, label: "Gross Freight Revenue", value: "$940.8B" },
+      { icon: Icons.Users, label: "Small Fleets (≤10 trucks)", value: "91.5%" },
+      { icon: Icons.Rocket, label: "Time to Full Launch", value: "8 Weeks" },
     ];
 
     const PHASES = [
       {
         name: "Phase 1: Pre-Launch",
-        week: "Weeks 1-4",
+        week: "Weeks 1–4",
+        goal: "Build must-have features and create buzz",
         tasks: [
-          { id: "t1", text: "Complete MVP design", done: false, note: "" },
-          { id: "t2", text: "Set up infrastructure", done: false, note: "" },
-          { id: "t3", text: "Implement core features", done: false, note: "" },
-          { id: "t4", text: "Create beta signup form", done: false, note: "" },
-          { id: "t5", text: "Finalize pricing strategy", done: false, note: "" },
-          { id: "t6", text: "Recruit beta testers", done: false, note: "" },
-          { id: "t7", text: "Set up analytics", done: false, note: "" },
-          { id: "t8", text: "Complete security audit", done: false, note: "" },
-          { id: "t9", text: "Build user documentation", done: false, note: "" },
-          { id: "t10", text: "Create marketing materials", done: false, note: "" },
+          { id: "t1", text: "Add PostgreSQL database (Neon/Supabase)", done: false, note: "", week: "1–2" },
+          { id: "t2", text: "Implement user auth (Clerk/Auth0) + multi-tenancy", done: false, note: "", week: "1–2" },
+          { id: "t3", text: "Build 3-step onboarding wizard", done: false, note: "", week: "3" },
+          { id: "t4", text: "Create public landing page with CTA", done: false, note: "", week: "3" },
+          { id: "t5", text: "Draft Terms of Service & Privacy Policy", done: false, note: "", week: "4" },
+          { id: "t6", text: "Security review & QA testing", done: false, note: "", week: "4" },
+          { id: "t7", text: "Create 'Coming Soon' page with email waitlist", done: false, note: "", week: "1" },
+          { id: "t8", text: "Write 3–5 LinkedIn posts about carrier pricing pain", done: false, note: "", week: "2–4" },
+          { id: "t9", text: "Record 60-second AI chatbot demo video", done: false, note: "", week: "3–4" },
+          { id: "t10", text: "Set up social accounts (LinkedIn, Facebook, YouTube)", done: false, note: "", week: "2" },
         ]
       },
       {
         name: "Phase 2: Soft Launch",
-        week: "Weeks 5-8",
+        week: "Weeks 5–8",
+        goal: "Get 100 beta users and gather feedback",
         tasks: [
-          { id: "t11", text: "Deploy beta to testers", done: false, note: "" },
-          { id: "t12", text: "Monitor system performance", done: false, note: "" },
-          { id: "t13", text: "Gather user feedback", done: false, note: "" },
-          { id: "t14", text: "Fix critical bugs", done: false, note: "" },
-          { id: "t15", text: "Optimize onboarding flow", done: false, note: "" },
-          { id: "t16", text: "Test payment processing", done: false, note: "" },
-          { id: "t17", text: "Launch beta support channel", done: false, note: "" },
-          { id: "t18", text: "Refine product messaging", done: false, note: "" },
-          { id: "t19", text: "Conduct beta user interviews", done: false, note: "" },
-          { id: "t20", text: "Prepare public launch plan", done: false, note: "" },
+          { id: "t11", text: "Launch to 100 beta users", done: false, note: "", week: "5" },
+          { id: "t12", text: "Post in Facebook trucking groups", done: false, note: "", week: "5–6" },
+          { id: "t13", text: "Post demo video on LinkedIn", done: false, note: "", week: "5" },
+          { id: "t14", text: "Share on Reddit (r/Truckers, r/FreightBrokers, r/OwnerOperators)", done: false, note: "", week: "5–6" },
+          { id: "t15", text: "Post in Canadian trucking forums (Loadlink, TransCore)", done: false, note: "", week: "6" },
+          { id: "t16", text: "Direct outreach to 50 existing Bungee carriers", done: false, note: "", week: "5" },
+          { id: "t17", text: "Contact OTA & CTA for newsletter feature", done: false, note: "", week: "6" },
+          { id: "t18", text: "Build shareable Quote PDF export", done: false, note: "", week: "6–7" },
+          { id: "t19", text: "Integrate live fuel price API (NRCan/GasBuddy)", done: false, note: "", week: "6–7" },
+          { id: "t20", text: "Iterate on UX based on beta feedback", done: false, note: "", week: "5–8" },
         ]
       },
       {
         name: "Phase 3: Full Launch",
-        week: "Weeks 9-12",
+        week: "Weeks 9–12",
+        goal: "1,000+ signups",
         tasks: [
-          { id: "t21", text: "Go live to general public", done: false, note: "" },
-          { id: "t22", text: "Execute marketing campaign", done: false, note: "" },
-          { id: "t23", text: "Launch PR outreach", done: false, note: "" },
-          { id: "t24", text: "Scale support team", done: false, note: "" },
-          { id: "t25", text: "Monitor market response", done: false, note: "" },
-          { id: "t26", text: "Optimize conversion funnel", done: false, note: "" },
-          { id: "t27", text: "Collect first month metrics", done: false, note: "" },
-          { id: "t28", text: "Plan Phase 4 initiatives", done: false, note: "" },
+          { id: "t21", text: "Open public registration", done: false, note: "", week: "8" },
+          { id: "t22", text: "Submit to Product Hunt", done: false, note: "", week: "9" },
+          { id: "t23", text: "Run targeted Facebook ads ($500–$1K budget)", done: false, note: "", week: "9–12" },
+          { id: "t24", text: "Partner with trucking podcasts/YouTube channels", done: false, note: "", week: "9–10" },
+          { id: "t25", text: "Create 'How to Price a Truckload' content series", done: false, note: "", week: "10–12" },
+          { id: "t26", text: "Attend trucking trade show (Truck World / MATS)", done: false, note: "", week: "10–12" },
+          { id: "t27", text: "Build accessorial charges module", done: false, note: "", week: "9–10" },
+          { id: "t28", text: "Add quote status tracking (Sent/Accepted/Declined)", done: false, note: "", week: "9–10" },
         ]
       },
       {
-        name: "Phase 4: Growth",
-        week: "Weeks 13+",
+        name: "Phase 4: Growth & Monetization",
+        week: "Weeks 13–24",
+        goal: "5,000+ users, launch Pro tier",
         tasks: [
-          { id: "t29", text: "Scale infrastructure", done: false, note: "" },
-          { id: "t30", text: "Expand team capacity", done: false, note: "" },
-          { id: "t31", text: "Launch mobile app", done: false, note: "" },
-          { id: "t32", text: "Add integrations", done: false, note: "" },
-          { id: "t33", text: "Develop advanced features", done: false, note: "" },
-          { id: "t34", text: "Expand to new markets", done: false, note: "" },
-          { id: "t35", text: "Build partner program", done: false, note: "" },
-          { id: "t36", text: "Establish thought leadership", done: false, note: "" },
-          { id: "t37", text: "Optimize unit economics", done: false, note: "" },
-          { id: "t38", text: "Plan Series A fundraising", done: false, note: "" },
+          { id: "t29", text: "Launch lane rate intelligence", done: false, note: "", week: "11–12" },
+          { id: "t30", text: "Build email notification system", done: false, note: "", week: "11–12" },
+          { id: "t31", text: "Launch Pro tier billing via Stripe ($29/mo)", done: false, note: "", week: "13–16" },
+          { id: "t32", text: "Build customer quote portal", done: false, note: "", week: "13–16" },
+          { id: "t33", text: "Build referral program (invite = 1 month Pro free)", done: false, note: "", week: "14" },
+          { id: "t34", text: "Partner with fuel card companies (Mudflap, EFS, Comdata)", done: false, note: "", week: "15–16" },
+          { id: "t35", text: "Build ELD integrations (Motive/KeepTruckin, Samsara)", done: false, note: "", week: "17–20" },
+          { id: "t36", text: "Launch Fleet tier ($79/mo) with dispatch view", done: false, note: "", week: "17–24" },
+          { id: "t37", text: "Build mobile PWA", done: false, note: "", week: "20–24" },
+          { id: "t38", text: "Publish 'State of Carrier Pricing' report", done: false, note: "", week: "20" },
         ]
       }
     ];
 
     const REVENUE_DATA = [
-      { year: "2026", revenue: 0, target: 500 },
-      { year: "2027", revenue: 2400, target: 8000 },
-      { year: "2028", revenue: 5600, target: 18000 },
+      { year: "Year 1", users: 5000, paid: 150, arr: 52200, rate: "3%" },
+      { year: "Year 2", users: 20000, paid: 1000, arr: 420000, rate: "5%" },
+      { year: "Year 3", users: 50000, paid: 3500, arr: 1680000, rate: "7%" },
     ];
 
     const KPI_TARGETS = [
-      { name: "Users", value: "5K", target: "50K" },
-      { name: "ARR", value: "$150K", target: "$5M" },
-      { name: "Churn", value: "8%", target: "<3%" },
-      { name: "CAC", value: "$150", target: "<$100" },
-      { name: "LTV", value: "$2.4K", target: ">$1K" },
-      { name: "NPS", value: "42", target: ">50" },
-      { name: "Retention", value: "85%", target: ">90%" },
-      { name: "Engagement", value: "62%", target: ">75%" },
+      { metric: "Signups", target: "1,000 by Week 12", icon: Icons.Users },
+      { metric: "Activation Rate", target: "> 60%", description: "First quote within 24h", icon: Icons.Zap },
+      { metric: "Weekly Active Users", target: "30% of signups", icon: Icons.TrendingUp },
+      { metric: "Quotes Per User", target: "> 3 / week", icon: Icons.BarChart3 },
+      { metric: "Free→Paid Conversion", target: "3–7%", icon: Icons.DollarSign },
+      { metric: "Net Promoter Score", target: "> 40", icon: Icons.Target },
+      { metric: "Churn Rate", target: "< 5%", icon: Icons.Shield },
+      { metric: "Customer Acq. Cost", target: "Near $0 (PLG)", icon: Icons.Globe },
     ];
 
     const RISKS = [
-      {
-        title: "Market Adoption",
-        description: "Target market may be slower to adopt new platforms",
-        likelihood: "High",
-        impact: "Critical"
-      },
-      {
-        title: "Competition",
-        description: "Established players may enter the space with superior resources",
-        likelihood: "Medium",
-        impact: "Critical"
-      },
-      {
-        title: "Regulatory Changes",
-        description: "Industry regulations could impact business model",
-        likelihood: "Medium",
-        impact: "High"
-      },
-      {
-        title: "Technical Challenges",
-        description: "Scaling infrastructure faster than anticipated costs",
-        likelihood: "Medium",
-        impact: "Medium"
-      },
-      {
-        title: "Team Retention",
-        description: "Key team members leave during critical phases",
-        likelihood: "Low",
-        impact: "High"
-      }
+      { risk: "Low adoption — carriers don't trust free tools", likelihood: "Medium", impact: "High", mitigation: "Video testimonials, OTA endorsement, transparent privacy policy. Emphasize Bungee is a working carrier." },
+      { risk: "Data privacy concerns", likelihood: "Medium", impact: "High", mitigation: "SOC2-ready architecture, clear data isolation, export/delete options, self-hosted option for large fleets." },
+      { risk: "Competitors copy the free model", likelihood: "Low", impact: "Medium", mitigation: "First-mover advantage. Build community lock-in via shared lane data. Network effects." },
+      { risk: "Server costs scale faster than revenue", likelihood: "Medium", impact: "Medium", mitigation: "Rate-limit free tier API calls. Serverless architecture (Vercel/Cloudflare Workers). Monitor cost per user." },
+      { risk: "Feature creep delays launch", likelihood: "High", impact: "High", mitigation: "Strict MVP scope — 5 must-haves only. Hard deadline Week 8. Iterate after real user feedback." },
     ];
 
     const PRICING_TIERS = [
       {
         name: "Free",
-        price: 0,
-        description: "Perfect for getting started",
-        features: [
-          "Up to 3 trips per month",
-          "Basic tracking",
-          "Email support",
-          "Community access"
-        ]
+        price: "Free",
+        sub: "Forever",
+        highlight: false,
+        features: ["Unlimited route quotes", "1 cost profile", "1 yard", "1 team member", "30-day quote history", "AI chatbot", "3-tier pricing advice"],
       },
       {
         name: "Pro",
-        price: 29,
-        description: "For active operators",
-        popular: true,
-        features: [
-          "Unlimited trips",
-          "Advanced analytics",
-          "Mobile app access",
-          "Priority support",
-          "Custom branding",
-          "API access"
-        ]
+        price: "$29",
+        sub: "/month",
+        highlight: true,
+        features: ["Everything in Free", "Unlimited cost profiles & yards", "Up to 5 team members", "Unlimited quote history", "Branded Quote PDFs", "Accessorial charges", "Quote status tracking", "Live fuel prices", "Lane rate intelligence", "Priority support"],
       },
       {
         name: "Fleet",
-        price: 79,
-        description: "For operation teams",
-        features: [
-          "Everything in Pro",
-          "Manage unlimited operators",
-          "Team analytics",
-          "24/7 phone support",
-          "Custom integrations",
-          "Dedicated account manager"
-        ]
-      }
+        price: "$79",
+        sub: "/month",
+        highlight: false,
+        features: ["Everything in Pro", "Unlimited team members", "Customer quote portal", "Multi-truck dispatch view", "Accounting export", "Border crossing module", "API access", "Dedicated support"],
+      },
     ];
 
     const EXISTING_FEATURES = [
-      { icon: Icons.Shield, text: "Safety Monitoring" },
-      { icon: Icons.Target, text: "Real-time Tracking" },
-      { icon: Icons.BarChart3, text: "Analytics Dashboard" },
-      { icon: Icons.Calendar, text: "Schedule Management" },
-      { icon: Icons.Users, text: "Team Collaboration" },
-      { icon: Icons.Globe, text: "Multi-location Support" },
-      { icon: Icons.Zap, text: "Mobile Integration" },
-      { icon: Icons.TrendingUp, text: "Performance Metrics" },
-      { icon: Icons.CheckCircle, text: "Status Notifications" },
-      { icon: Icons.Rocket, text: "Quick Deployment" },
+      { icon: Icons.Globe, text: "Route Builder — Multi-stop with drag-and-drop & Leaflet map" },
+      { icon: Icons.Zap, text: "AI Chatbot — Natural language route parsing" },
+      { icon: Icons.Truck, text: "Cost Profiles — Dry Van, Reefer, Flatbed setup wizard" },
+      { icon: Icons.Target, text: "Yard-Based Routing — Auto-calculate deadhead miles" },
+      { icon: Icons.DollarSign, text: "3-Tier Pricing Advice — 20%, 30%, 40% margin quotes" },
+      { icon: Icons.Users, text: "Team Management — Admin vs. Sales roles with PIN auth" },
+      { icon: Icons.Calendar, text: "Quote History — Save and review past quotes" },
+      { icon: Icons.BarChart3, text: "Local P&D Detection — City traffic & waiting time pricing" },
+      { icon: Icons.Shield, text: "Dark Mode — Full dark/light theme support" },
+      { icon: Icons.Rocket, text: "Responsive Design — Desktop and mobile ready" },
     ];
 
     const CRITICAL_GAPS = [
-      { text: "Advanced AI-powered safety predictions" },
-      { text: "Blockchain verification for operator credentials" },
-      { text: "Automated insurance claim processing" },
-      { text: "Real-time regulatory compliance checking" },
-      { text: "Predictive maintenance scheduling" },
+      { title: "User Authentication & Multi-Tenancy", desc: "Proper auth layer (Clerk/Auth0), company_id on all tables, org-level data isolation", est: "Week 1–2" },
+      { title: "Persistent Database", desc: "Connect Drizzle ORM to PostgreSQL (Neon/Supabase) — schema already defined", est: "Week 1–2" },
+      { title: "Onboarding Flow", desc: "3-step wizard: Create Account → Name Company → Run Cost Profile Wizard → First Route", est: "Week 3" },
+      { title: "Landing Page", desc: "Public-facing marketing page with value proposition, screenshots, 'Sign Up Free' CTA", est: "Week 3" },
+      { title: "Terms of Service & Privacy Policy", desc: "Required for public SaaS handling business financial data — lawyer review recommended", est: "Week 4" },
     ];
 
     function StatCard({ icon: Icon, label, value }) {
@@ -1283,9 +1245,10 @@
               <div className="header-content">
                 <div className="logo-section">
                   <div className="logo">BC</div>
-                  <h1 className="title">LAUNCH TRACKER</h1>
-                  <span className="badge">Live</span>
+                  <h1 className="title">Bungee Connect</h1>
+                  <span className="badge">LAUNCH TRACKER</span>
                 </div>
+                <p style={{fontSize: "13px", color: "#9CA3AF", marginTop: "4px"}}>Free instant quoting for 2.1M+ North American carriers — Go-to-market dashboard</p>
               </div>
 
               <div className="progress-section">
@@ -1367,27 +1330,28 @@
                   <div className="callout-content">
                     <div className="callout-title">Key Insight</div>
                     <div className="callout-text">
-                      The bungee jumping market is underserved with digital solutions. Operators are managing logistics with fragmented tools, creating a $2.5B TAM opportunity.
+                      NOBODY offers a free, carrier-focused, instant cost + quote calculator with route visualization. 77% of fleets cite increasing costs as their top challenge. 61% still use disconnected patchwork systems. Bungee Connect is built to capture this opportunity.
                     </div>
                   </div>
                 </div>
 
-                <SectionHeader icon={Icons.Calendar} title="Launch Phases" />
+                <SectionHeader icon={Icons.Calendar} title="Launch Phases at a Glance" />
                 <div className="grid grid-2">
                   {phases.map((phase, idx) => (
                     <div
                       key={idx}
                       className="phase-card"
-                      onClick={() => setActiveTab("timeline")}
+                      onClick={() => { setActiveTab("timeline"); setExpandedPhase(idx); }}
                     >
                       <div className="phase-header">
                         <h3 className="phase-title">{phase.name}</h3>
                         <span className="phase-badge">{phase.week}</span>
                       </div>
+                      {phase.goal && <div style={{fontSize: "12px", color: "#9CA3AF", marginBottom: "10px"}}>{phase.goal}</div>}
                       <div className="phase-progress">
                         <ProgressBar percentage={getPhaseProgress(phase)} />
                         <div className="progress-text-small">
-                          {phase.tasks.filter(t => t.done).length}/{phase.tasks.length} tasks
+                          {phase.tasks.filter(t => t.done).length}/{phase.tasks.length} tasks complete
                         </div>
                       </div>
                     </div>
@@ -1406,14 +1370,20 @@
                   ))}
                 </div>
 
-                <SectionHeader icon={Icons.AlertTriangle} title="Critical Gaps" />
-                <div className="grid grid-2">
+                <SectionHeader icon={Icons.AlertTriangle} title="5 Must-Have Gaps Before Launch" />
+                <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
                   {CRITICAL_GAPS.map((gap, idx) => (
-                    <div key={idx} className="gap-item">
-                      <div className="gap-icon">
-                        <Icons.X size={18} />
+                    <div key={idx} className="gap-item" style={{flexDirection: "column", alignItems: "flex-start"}}>
+                      <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: "8px"}}>
+                        <div style={{display: "flex", alignItems: "center", gap: "10px"}}>
+                          <div className="gap-icon" style={{background: "rgba(245,158,11,0.1)", color: "#F59E0B", width: "28px", height: "28px", fontSize: "14px", fontWeight: "700", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                            {idx + 1}
+                          </div>
+                          <span style={{fontWeight: "600", color: "#E8E8E8", fontSize: "14px"}}>{gap.title}</span>
+                        </div>
+                        <span className="phase-badge" style={{background: "rgba(245,158,11,0.2)", borderColor: "rgba(245,158,11,0.4)", color: "#F59E0B"}}>{gap.est}</span>
                       </div>
-                      <div className="gap-text">{gap.text}</div>
+                      <div style={{fontSize: "12px", color: "#9CA3AF", marginTop: "4px", paddingLeft: "38px"}}>{gap.desc}</div>
                     </div>
                   ))}
                 </div>
@@ -1461,7 +1431,10 @@
                                 {task.done && <Icons.CheckCircle size={16} />}
                               </div>
                               <div className="task-content">
-                                <div className={`task-text ${task.done ? "done" : ""}`}>{task.text}</div>
+                                <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px", marginBottom: "8px"}}>
+                                  <div className={`task-text ${task.done ? "done" : ""}`} style={{marginBottom: "0"}}>{task.text}</div>
+                                  {task.week && <span style={{fontSize: "11px", color: "#9CA3AF", flexShrink: "0"}}>Wk {task.week}</span>}
+                                </div>
                                 <div className="task-controls">
                                   <button
                                     className="task-button"
@@ -1515,7 +1488,7 @@
                   <div className="callout-content">
                     <div className="callout-title">Core Principle</div>
                     <div className="callout-text">
-                      Simple, transparent pricing that scales with operator operations. Free tier builds adoption, Pro for serious operators, Fleet for team management.
+                      The quoting tool is FREE forever. This is the hook that drives adoption. Monetize through premium features that power users need as they grow.
                     </div>
                   </div>
                 </div>
@@ -1523,11 +1496,11 @@
                 <SectionHeader icon={Icons.Target} title="Pricing Tiers" />
                 <div className="grid grid-3">
                   {PRICING_TIERS.map((tier, idx) => (
-                    <div key={idx} className={`pricing-card ${tier.popular ? "popular" : ""}`}>
-                      {tier.popular && <div className="pricing-popular-badge">Most Popular</div>}
+                    <div key={idx} className={`pricing-card ${tier.highlight ? "popular" : ""}`}>
+                      {tier.highlight && <div className="pricing-popular-badge">Most Popular</div>}
                       <div className="pricing-name">{tier.name}</div>
-                      <div className="pricing-price">{tier.price === 0 ? "Free" : `$${tier.price}`}</div>
-                      <div className="pricing-price-label">{tier.price === 0 ? "Forever" : "per month"}</div>
+                      <div className="pricing-price">{tier.price}</div>
+                      <div className="pricing-price-label">{tier.sub}</div>
                       <div className="pricing-features">
                         {tier.features.map((feature, idx) => (
                           <div key={idx} className="pricing-feature">
@@ -1540,17 +1513,18 @@
                   ))}
                 </div>
 
-                <SectionHeader icon={Icons.TrendingUp} title="Revenue Projections" />
+                <SectionHeader icon={Icons.TrendingUp} title="Revenue Projections (Conservative)" />
                 <div className="chart-container">
-                  <CSSBarChart data={REVENUE_DATA} />
+                  <CSSBarChart data={REVENUE_DATA} maxVal={1800000} />
                 </div>
 
                 <SectionHeader icon={Icons.BarChart3} title="Annual Summary" />
                 <div className="grid grid-3">
-                  {REVENUE_DATA.map((year, idx) => (
+                  {REVENUE_DATA.map((d, idx) => (
                     <div key={idx} className="summary-card">
-                      <div className="summary-label">Year {year.year.slice(-2)}</div>
-                      <div className="summary-value">${(year.revenue).toLocaleString()}</div>
+                      <div className="summary-label">{d.year}</div>
+                      <div className="summary-value">${d.arr.toLocaleString()} ARR</div>
+                      <div style={{fontSize: "12px", color: "#9CA3AF", marginTop: "4px"}}>{d.users.toLocaleString()} free → {d.paid.toLocaleString()} paid ({d.rate})</div>
                     </div>
                   ))}
                 </div>
@@ -1565,58 +1539,60 @@
                     <Icons.Target size={20} />
                   </div>
                   <div className="callout-content">
-                    <div className="callout-title">Success Metrics</div>
+                    <div className="callout-title">Priority #1</div>
                     <div className="callout-text">
-                      These KPIs track product-market fit, unit economics, and operational health. Measured monthly and reviewed with stakeholders.
+                      Focus on activation rate above all else in the first 90 days. If users don't build their first quote within 24 hours, they're unlikely to come back.
                     </div>
                   </div>
                 </div>
 
-                <SectionHeader icon={Icons.TrendingUp} title="Key Performance Indicators" />
+                <SectionHeader icon={Icons.TrendingUp} title="Key Metrics to Track" />
                 <div className="grid grid-4">
                   {KPI_TARGETS.map((kpi, idx) => (
                     <div key={idx} className="kpi-card">
                       <div className="kpi-icon">
-                        <Icons.Zap size={20} />
+                        <kpi.icon size={20} />
                       </div>
-                      <div className="kpi-name">{kpi.name}</div>
-                      <div className="kpi-value">{kpi.value}</div>
-                      <div className="kpi-target">Target: {kpi.target}</div>
+                      <div className="kpi-name">{kpi.metric}</div>
+                      <div className="kpi-value">{kpi.target}</div>
+                      {kpi.description && <div className="kpi-target">{kpi.description}</div>}
                     </div>
                   ))}
                 </div>
 
-                <SectionHeader icon={Icons.AlertTriangle} title="Risk Assessment" />
-                <div className="grid grid-2">
-                  {RISKS.map((risk, idx) => (
+                <SectionHeader icon={Icons.AlertTriangle} title="Risk Register" />
+                <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
+                  {RISKS.map((r, idx) => (
                     <div key={idx} className="risk-card">
                       <div className="risk-title">
-                        <Icons.Shield size={18} />
-                        {risk.title}
+                        <Icons.AlertTriangle size={14} />
+                        {r.risk}
+                        <span style={{marginLeft: "auto", display: "flex", gap: "6px"}}>
+                          <Badge
+                            text={`${r.likelihood} likelihood`}
+                            variant={r.likelihood === "High" ? "critical" : r.likelihood === "Medium" ? "high" : "low"}
+                          />
+                          <Badge
+                            text={`${r.impact} impact`}
+                            variant={r.impact === "High" ? "critical" : r.impact === "Medium" ? "high" : "low"}
+                          />
+                        </span>
                       </div>
-                      <div className="risk-description">{risk.description}</div>
-                      <div className="risk-badges">
-                        <Badge
-                          text={`Likelihood: ${risk.likelihood}`}
-                          variant={risk.likelihood === "High" ? "critical" : risk.likelihood === "Medium" ? "high" : "medium"}
-                        />
-                        <Badge
-                          text={`Impact: ${risk.impact}`}
-                          variant={risk.impact === "Critical" ? "critical" : risk.impact === "High" ? "high" : "medium"}
-                        />
+                      <div className="risk-description" style={{paddingLeft: "24px"}}>
+                        <strong style={{color: "#E8E8E8"}}>Mitigation:</strong> {r.mitigation}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="callout" style={{ marginTop: "30px", borderColor: BRAND.yellow + "40", background: "rgba(245, 158, 11, 0.08)" }}>
-                  <div className="callout-icon" style={{ color: BRAND.yellow }}>
+                <div className="callout" style={{ marginTop: "30px", borderColor: "rgba(239,68,68,0.3)", background: "rgba(239, 68, 68, 0.06)" }}>
+                  <div className="callout-icon" style={{ color: "#EF4444" }}>
                     <Icons.AlertTriangle size={20} />
                   </div>
                   <div className="callout-content">
-                    <div className="callout-title">Feature Creep Warning</div>
+                    <div className="callout-title" style={{color: "#EF4444"}}>Risk #1 is feature creep</div>
                     <div className="callout-text">
-                      Prioritize core operator experience over advanced features. Secondary features should only launch after achieving 80% retention and positive NPS.
+                      Resist the temptation to build "just one more thing" before launch. The 5 must-have features are the launch scope. Everything else comes after real users are providing feedback.
                     </div>
                   </div>
                 </div>
@@ -1625,7 +1601,7 @@
 
             {/* Footer */}
             <div className="footer">
-              <p>© 2026 Bungee Connect. All rights reserved. Built for the extreme sports community.</p>
+              <p>Bungee Supply Chain Ltd. · Mississauga · North York · Brampton · Ontario, Canada · March 2026 · Confidential</p>
             </div>
           </div>
         </div>
