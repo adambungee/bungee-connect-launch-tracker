@@ -57,16 +57,14 @@
     }
 
     .logo {
-      width: 40px;
       height: 40px;
-      background: #D4541C;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 20px;
-      color: #FFFFFF;
+      width: auto;
+    }
+
+    .logo img {
+      height: 100%;
+      width: auto;
+      filter: brightness(0) invert(1);
     }
 
     .title {
@@ -1315,7 +1313,7 @@
           <div className="header">
             <div className="header-content">
               <div className="logo-section">
-                <div className="logo">BC</div>
+                <div className="logo"><img src="/assets/bungee-connect-logo.png" alt="Bungee Connect" /></div>
                 <h1 className="title">Bungee Connect</h1>
                 <span className="badge">LAUNCH TRACKER</span>
               </div>
