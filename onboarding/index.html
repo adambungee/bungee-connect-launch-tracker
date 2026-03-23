@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bungee Connect — Get Started</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { height: 100%; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #2D2A26; background: #F7F7F7; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100%; display: flex; flex-direction: column; }
+
+  :root {
+    --orange: #D4541C;
+    --orange-hover: #B8461A;
+    --orange-light: #FFF4EF;
+    --charcoal: #2D2A26;
+    --gray-50: #F7F7F7;
+    --gray-100: #F0F0F0;
+    --gray-200: #E5E7EB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --gray-700: #3B3835;
+    --white: #FFFFFF;
+    --green: #10B981;
+    --red: #EF4444;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+  }
+
+  /* ─── Layout ─── */
+  .onboarding { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 24px; }
+
+  /* ─── Top Bar ─── */
+  .top-bar { width: 100%; max-width: 640px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { width: 32px; height: 32px; background: var(--orange); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+  .logo-icon svg { width: 18px; height: 18px; fill: white; }
+  .logo-text { font-size: 16px; font-weight: 800; color: var(--charcoal); }
+  .logo-text span { display: block; font-size: 8px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gray-500); line-height: 1; margin-top: -1px; }
+  .step-indicator { font-size: 13px; color: var(--gray-400); font-weight: 500; }
+
+  /* ─── Progress ─── */
+  .progress-bar { width: 100%; max-width: 640px; height: 4px; background: var(--gray-200); border-radius: 4px; margin-bottom: 40px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--orange); border-radius: 4px; transition: width 0.4s ease; }
+
+  /* ─── Steps Visual ─── */
+  .steps-nav { width: 100%; max-width: 640px; display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 36px; }
+  .step-dot-group { display: flex; align-items: center; }
+  .step-dot { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; transition: all 0.3s ease; cursor: default; }
+  .step-dot.active { background: var(--orange); color: white; box-shadow: 0 0 0 4px rgba(212,84,28,0.15); }
+  .step-dot.completed { background: var(--green); color: white; }
+  .step-dot.completed svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 3; }
+  .step-dot.pending { background: var(--gray-200); color: var(--gray-400); }
+  .step-connector { width: 60px; height: 2px; margin: 0 8px; transition: background 0.3s; }
+  .step-connector.done { background: var(--green); }
+  .step-connector.pending { background: var(--gray-200); }
+  .step-label { font-size: 11px; color: var(--gray-500); text-align: center; margin-top: 6px; }
+  .step-label.active-label { color: var(--orange); font-weight: 600; }
+  .step-col { display: flex; flex-direction: column; align-items: center; }
+
+  /* ─── Card ─── */
+  .card { width: 100%; max-width: 640px; background: white; border-radius: var(--radius-lg); padding: 40px 36px; box-shadow: var(--shadow-md); border: 1px solid var(--gray-100); }
+  .card-title { font-size: 24px; font-weight: 800; color: var(--charcoal); letter-spacing: -0.8px; margin-bottom: 6px; }
+  .card-sub { font-size: 14px; color: var(--gray-500); margin-bottom: 28px; line-height: 1.6; }
+
+  /* ─── Forms ─── */
+  .form-group { margin-bottom: 20px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--charcoal); margin-bottom: 6px; }
+  .form-label .req { color: var(--red); }
+  .form-input { width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); outline: none; transition: border-color 0.2s, box-shadow 0.2s; background: white; color: var(--charcoal); }
+  .form-input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(212,84,28,0.08); }
+  .form-input::placeholder { color: var(--gray-400); }
+  .form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-helper { font-size: 12px; color: var(--gray-400); margin-top: 4px; }
+  .form-divider { display: flex; align-items: center; gap: 16px; margin: 24px 0; }
+  .form-divider-line { flex: 1; height: 1px; background: var(--gray-200); }
+  .form-divider-text { font-size: 12px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ─── SSO Buttons ─── */
+  .sso-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px; }
+  .sso-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 11px; font-size: 14px; font-weight: 500; color: var(--charcoal); background: white; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s; }
+  .sso-btn:hover { background: var(--gray-50); border-color: var(--gray-400); }
+  .sso-btn svg { width: 18px; height: 18px; }
+
+  /* ─── Equipment Cards ─── */
+  .equip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .equip-card { padding: 20px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: all 0.2s; }
+  .equip-card:hover { border-color: var(--gray-400); background: var(--gray-50); }
+  .equip-card.selected { border-color: var(--orange); background: var(--orange-light); }
+  .equip-icon { width: 44px; height: 44px; background: var(--gray-50); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+  .equip-card.selected .equip-icon { background: rgba(212,84,28,0.1); }
+  .equip-icon svg { width: 22px; height: 22px; stroke: var(--gray-500); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .equip-card.selected .equip-icon svg { stroke: var(--orange); }
+  .equip-name { font-size: 14px; font-weight: 600; color: var(--charcoal); }
+  .equip-desc { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+
+  /* ─── Cost Inputs ─── */
+  .cost-section { margin-bottom: 20px; }
+  .cost-section-title { font-size: 13px; font-weight: 600; color: var(--orange); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .cost-section-title::before { content: ''; width: 16px; height: 2px; background: var(--orange); }
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cost-input-group { position: relative; }
+  .cost-prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--gray-400); pointer-events: none; margin-top: 10px; }
+  .cost-input-group .form-input { padding-left: 28px; }
+  .cost-suffix { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--gray-400); pointer-events: none; margin-top: 10px; }
+
+  /* ─── Route Builder (Step 4) ─── */
+  .route-input-row { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-end; }
+  .route-input-row .form-group { flex: 1; margin-bottom: 0; }
+  .route-stops { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .route-stop { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--gray-50); border-radius: var(--radius-sm); border: 1px solid var(--gray-100); }
+  .route-stop-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .route-stop-dot.origin { background: var(--orange); }
+  .route-stop-dot.dest { background: var(--green); }
+  .route-stop-dot.stop { background: var(--gray-400); }
+  .route-stop-text { flex: 1; font-size: 14px; font-weight: 500; color: var(--charcoal); }
+  .route-stop-remove { width: 28px; height: 28px; border-radius: 50%; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; color: var(--gray-400); }
+  .route-stop-remove:hover { background: rgba(239,68,68,0.1); color: var(--red); }
+  .route-connector { width: 2px; height: 16px; background: var(--gray-200); margin-left: 18px; }
+  .add-stop-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--orange); background: none; border: none; cursor: pointer; padding: 6px 0; transition: opacity 0.2s; }
+  .add-stop-btn:hover { opacity: 0.7; }
+  .route-map-placeholder { width: 100%; height: 160px; background: var(--gray-50); border-radius: var(--radius-md); border: 1px dashed var(--gray-200); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
+  .route-map-placeholder svg { width: 32px; height: 32px; stroke: var(--gray-400); fill: none; stroke-width: 1.5; }
+  .route-map-placeholder span { font-size: 13px; color: var(--gray-400); }
+
+  /* ─── Success ─── */
+  .success-content { text-align: center; padding: 20px 0; }
+  .success-icon { width: 72px; height: 72px; border-radius: 50%; background: rgba(16,185,129,0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+  .success-icon svg { width: 36px; height: 36px; stroke: var(--green); fill: none; stroke-width: 2.5; }
+  .success-title { font-size: 28px; font-weight: 800; color: var(--charcoal); letter-spacing: -1px; margin-bottom: 8px; }
+  .success-sub { font-size: 15px; color: var(--gray-500); line-height: 1.6; max-width: 420px; margin: 0 auto 32px; }
+  .success-features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; margin-bottom: 32px; }
+  .success-feature { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: var(--gray-50); border-radius: var(--radius-sm); border: 1px solid var(--gray-100); }
+  .success-feature svg { width: 16px; height: 16px; stroke: var(--green); fill: none; stroke-width: 2.5; flex-shrink: 0; margin-top: 1px; }
+  .success-feature span { font-size: 13px; color: var(--gray-500); line-height: 1.4; }
+
+  /* ─── Buttons ─── */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); transition: all 0.2s ease; cursor: pointer; border: none; font-family: inherit; }
+  .btn-primary { background: var(--orange); color: white; }
+  .btn-primary:hover { background: var(--orange-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-secondary { background: transparent; color: var(--gray-500); border: 1.5px solid var(--gray-200); }
+  .btn-secondary:hover { background: var(--gray-50); color: var(--charcoal); }
+  .btn-lg { padding: 14px 32px; font-size: 16px; }
+  .btn-full { width: 100%; }
+  .card-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--gray-100); }
+  .card-actions.center { justify-content: center; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 640px) {
+    .card { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .sso-row { grid-template-columns: 1fr; }
+    .equip-grid { grid-template-columns: 1fr; }
+    .cost-grid { grid-template-columns: 1fr; }
+    .success-features { grid-template-columns: 1fr; }
+    .steps-nav { gap: 0; }
+    .step-connector { width: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="onboarding" id="app">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+      </div>
+      <div class="logo-text">Bungee<span>CONNECT</span></div>
+    </div>
+    <div class="step-indicator" id="stepLabel">Step 1 of 4</div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+
+  <!-- Step Nav -->
+  <div class="steps-nav" id="stepsNav">
+    <div class="step-col">
+      <div class="step-dot active" id="dot1">1</div>
+      <div class="step-label active-label">Account</div>
+    </div>
+    <div class="step-connector pending" id="conn1"></div>
+    <div class="step-col">
+      <div class="step-dot pending" id="dot2">2</div>
+      <div class="step-label">Company</div>
+    </div>
+    <div class="step-connector pending" id="conn2"></div>
+    <div class="step-col">
+      <div class="step-dot pending" id="dot3">3</div>
+      <div class="step-label">Cost Profile</div>
+    </div>
+    <div class="step-connector pending" id="conn3"></div>
+    <div class="step-col">
+      <div class="step-dot pending" id="dot4">4</div>
+      <div class="step-label">First Route</div>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 1: Create Account ═══ -->
+  <div class="card" id="step1">
+    <h2 class="card-title">Create Your Account</h2>
+    <p class="card-sub">Get started in under a minute. Free forever — no credit card needed.</p>
+
+    <div class="sso-row">
+      <button class="sso-btn">
+        <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <button class="sso-btn">
+        <svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.32 2.32-1.55 4.3-3.74 4.25z" fill="#000"/></svg>
+        Continue with Apple
+      </button>
+    </div>
+
+    <div class="form-divider">
+      <div class="form-divider-line"></div>
+      <div class="form-divider-text">or sign up with email</div>
+      <div class="form-divider-line"></div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">First Name <span class="req">*</span></label>
+        <input class="form-input" type="text" placeholder="John">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Name <span class="req">*</span></label>
+        <input class="form-input" type="text" placeholder="Smith">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email <span class="req">*</span></label>
+      <input class="form-input" type="email" placeholder="john@myfleet.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password <span class="req">*</span></label>
+      <input class="form-input" type="password" placeholder="Minimum 8 characters">
+      <div class="form-helper">Must include uppercase, lowercase, and a number</div>
+    </div>
+
+    <div class="card-actions" style="border-top:none;margin-top:24px;padding-top:0;">
+      <span></span>
+      <button class="btn btn-primary btn-lg" onclick="goToStep(2)">Create Account</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 2: Company Info ═══ -->
+  <div class="card" id="step2" style="display:none;">
+    <h2 class="card-title">Name Your Company</h2>
+    <p class="card-sub">This helps us customize your experience. You can change these anytime.</p>
+
+    <div class="form-group">
+      <label class="form-label">Company Name <span class="req">*</span></label>
+      <input class="form-input" type="text" placeholder="Smith Trucking Inc.">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Fleet Size</label>
+        <select class="form-input form-select">
+          <option>1 truck (Owner-Operator)</option>
+          <option>2–5 trucks</option>
+          <option>6–10 trucks</option>
+          <option>11–25 trucks</option>
+          <option>26–50 trucks</option>
+          <option>50+ trucks</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Province / State</label>
+        <select class="form-input form-select">
+          <option>Ontario</option>
+          <option>Quebec</option>
+          <option>British Columbia</option>
+          <option>Alberta</option>
+          <option>Manitoba</option>
+          <option>Saskatchewan</option>
+          <option>Other Canada</option>
+          <option>Michigan</option>
+          <option>Ohio</option>
+          <option>Illinois</option>
+          <option>Texas</option>
+          <option>Other US</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Base Yard Address</label>
+      <input class="form-input" type="text" placeholder="123 Industrial Blvd, Mississauga, ON">
+      <div class="form-helper">Used to auto-calculate deadhead miles on every quote</div>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+      <button class="btn btn-primary" onclick="goToStep(3)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 3: Cost Profile ═══ -->
+  <div class="card" id="step3" style="display:none;">
+    <h2 class="card-title">Set Up Your Cost Profile</h2>
+    <p class="card-sub">Tell us about your equipment and costs so we can calculate accurate quotes. Don't worry — you can adjust these later.</p>
+
+    <!-- Equipment Type -->
+    <div class="form-group">
+      <label class="form-label">Equipment Type <span class="req">*</span></label>
+      <div class="equip-grid">
+        <div class="equip-card selected" onclick="selectEquip(this)">
+          <div class="equip-icon"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 10h4l3 3v5h-7V10z"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg></div>
+          <div class="equip-name">Dry Van</div>
+          <div class="equip-desc">Standard enclosed</div>
+        </div>
+        <div class="equip-card" onclick="selectEquip(this)">
+          <div class="equip-icon"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 10h4l3 3v5h-7V10z"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/><path d="M4 9v3M8 9v3M12 9v3" stroke-dasharray="1 1"/></svg></div>
+          <div class="equip-name">Reefer</div>
+          <div class="equip-desc">Temperature-controlled</div>
+        </div>
+        <div class="equip-card" onclick="selectEquip(this)">
+          <div class="equip-icon"><svg viewBox="0 0 24 24"><path d="M1 14h15V8H1z"/><path d="M16 10h4l3 3v5h-7V10z"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/><path d="M1 14V8"/></svg></div>
+          <div class="equip-name">Flatbed</div>
+          <div class="equip-desc">Open deck</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Truck Costs -->
+    <div class="cost-section">
+      <div class="cost-section-title">Monthly Truck Costs</div>
+      <div class="cost-grid">
+        <div class="form-group">
+          <label class="form-label">Truck Payment</label>
+          <div class="cost-input-group">
+            <span class="cost-prefix">$</span>
+            <input class="form-input" type="number" placeholder="2,500" value="2500">
+            <span class="cost-suffix">/mo</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Insurance</label>
+          <div class="cost-input-group">
+            <span class="cost-prefix">$</span>
+            <input class="form-input" type="number" placeholder="1,200" value="1200">
+            <span class="cost-suffix">/mo</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Maintenance</label>
+          <div class="cost-input-group">
+            <span class="cost-prefix">$</span>
+            <input class="form-input" type="number" placeholder="800" value="800">
+            <span class="cost-suffix">/mo</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Permits &amp; Licensing</label>
+          <div class="cost-input-group">
+            <span class="cost-prefix">$</span>
+            <input class="form-input" type="number" placeholder="200" value="200">
+            <span class="cost-suffix">/mo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Operational -->
+    <div class="cost-section">
+      <div class="cost-section-title">Operational Costs</div>
+      <div class="cost-grid">
+        <div class="form-group">
+          <label class="form-label">Driver Hourly Wage</label>
+          <div class="cost-input-group">
+            <span class="cost-prefix">$</span>
+            <input class="form-input" type="number" placeholder="28" value="28">
+            <span class="cost-suffix">/hr</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fuel Price</label>
+          <div class="cost-input-group">
+            <span class="cost-prefix">$</span>
+            <input class="form-input" type="number" step="0.01" placeholder="1.65" value="1.65">
+            <span class="cost-suffix">/L</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fuel Consumption</label>
+          <div class="cost-input-group">
+            <input class="form-input" type="number" step="0.1" placeholder="38" value="38">
+            <span class="cost-suffix">L/100km</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dock / Detention Rate</label>
+          <div class="cost-input-group">
+            <span class="cost-prefix">$</span>
+            <input class="form-input" type="number" placeholder="75" value="75">
+            <span class="cost-suffix">/hr</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+      <button class="btn btn-primary" onclick="goToStep(4)">Save & Continue</button>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 4: First Route ═══ -->
+  <div class="card" id="step4" style="display:none;">
+    <h2 class="card-title">Build Your First Route</h2>
+    <p class="card-sub">Try it out! Enter an origin and destination to see your first instant quote.</p>
+
+    <div class="form-group">
+      <label class="form-label">Or just type it</label>
+      <input class="form-input" type="text" placeholder='Try: "Toronto to Hamilton to London"' style="background:var(--orange-light);border-color:rgba(212,84,28,0.2);">
+      <div class="form-helper">Our AI chatbot parses natural language and builds the route for you</div>
+    </div>
+
+    <div class="form-divider">
+      <div class="form-divider-line"></div>
+      <div class="form-divider-text">or add stops manually</div>
+      <div class="form-divider-line"></div>
+    </div>
+
+    <div class="route-stops">
+      <div class="route-stop">
+        <div class="route-stop-dot origin"></div>
+        <div class="route-stop-text">Mississauga, ON (Your Yard)</div>
+        <div style="font-size:11px;color:var(--gray-400);background:var(--orange-light);padding:2px 8px;border-radius:4px;">Origin</div>
+      </div>
+      <div class="route-connector"></div>
+      <div class="route-stop">
+        <div class="route-stop-dot stop"></div>
+        <input class="form-input" type="text" placeholder="Add pickup location" style="border:none;padding:0;font-size:14px;font-weight:500;">
+      </div>
+      <div class="route-connector"></div>
+      <div class="route-stop">
+        <div class="route-stop-dot dest"></div>
+        <input class="form-input" type="text" placeholder="Add delivery destination" style="border:none;padding:0;font-size:14px;font-weight:500;">
+      </div>
+    </div>
+    <button class="add-stop-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Add another stop
+    </button>
+
+    <div class="route-map-placeholder">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span>Route map will appear here</span>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn btn-secondary" onclick="goToStep(3)">Back</button>
+      <button class="btn btn-primary" onclick="goToStep(5)">Calculate Quote</button>
+    </div>
+  </div>
+
+  <!-- ═══ SUCCESS ═══ -->
+  <div class="card" id="step5" style="display:none;">
+    <div class="success-content">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      </div>
+      <h2 class="success-title">You're All Set!</h2>
+      <p class="success-sub">Your account is ready and your first cost profile is saved. Start quoting loads with confidence.</p>
+
+      <div class="success-features">
+        <div class="success-feature"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>Unlimited free route quotes</span></div>
+        <div class="success-feature"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>AI chatbot ready to use</span></div>
+        <div class="success-feature"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>3-tier pricing on every quote</span></div>
+        <div class="success-feature"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span>Cost profile saved &amp; customizable</span></div>
+      </div>
+
+      <button class="btn btn-primary btn-lg" style="width:100%;">Go to Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentStep = 1;
+
+  function goToStep(step) {
+    // Hide current
+    document.getElementById('step' + currentStep).style.display = 'none';
+    // Show new
+    document.getElementById('step' + step).style.display = 'block';
+    currentStep = step;
+
+    // Progress
+    const total = 4;
+    const pct = step > total ? 100 : (step / total) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    // Step label
+    document.getElementById('stepLabel').textContent = step > total
+      ? 'Complete!' : 'Step ' + step + ' of ' + total;
+
+    // Step dots
+    for (let i = 1; i <= 4; i++) {
+      const dot = document.getElementById('dot' + i);
+      const labels = document.querySelectorAll('.step-label');
+      dot.className = 'step-dot';
+      labels[i - 1].className = 'step-label';
+      if (i < step) {
+        dot.className = 'step-dot completed';
+        dot.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>';
+      } else if (i === step && step <= 4) {
+        dot.className = 'step-dot active';
+        dot.textContent = i;
+        labels[i - 1].className = 'step-label active-label';
+      } else {
+        dot.className = 'step-dot pending';
+        dot.textContent = i;
+      }
+    }
+
+    // Connectors
+    for (let i = 1; i <= 3; i++) {
+      const conn = document.getElementById('conn' + i);
+      conn.className = i < step ? 'step-connector done' : 'step-connector pending';
+    }
+
+    // Hide steps nav on success
+    if (step > 4) {
+      document.getElementById('stepsNav').style.display = 'none';
+    } else {
+      document.getElementById('stepsNav').style.display = 'flex';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectEquip(el) {
+    document.querySelectorAll('.equip-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+</script>
+</body>
+</html>
