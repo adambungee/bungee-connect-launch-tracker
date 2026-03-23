@@ -8,7 +8,7 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+  <!-- Charts rendered with pure CSS -->
   <style>
     * {
       margin: 0;
@@ -917,7 +917,23 @@
 
   <script type="text/babel">
     const { useState, useMemo } = React;
-    const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } = window.Recharts;
+    // CSS-based chart component (no external charting lib needed)
+    const CSSBarChart = ({ data, maxVal }) => {
+      const max = maxVal || Math.max(...data.map(d => Math.max(d.revenue || 0, d.target || 0)));
+      return React.createElement("div", { style: { display: "flex", alignItems: "flex-end", gap: 24, height: 220, padding: "20px 0" } },
+        data.map((d, i) => React.createElement("div", { key: i, style: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 } },
+          React.createElement("div", { style: { display: "flex", alignItems: "flex-end", gap: 6, width: "100%", justifyContent: "center", height: 180 } },
+            d.target && React.createElement("div", { style: { width: "35%", height: `${(d.target / max) * 100}%`, background: BRAND.orangeBorder, borderRadius: "6px 6px 0 0", opacity: 0.5, position: "relative" } },
+              React.createElement("span", { style: { position: "absolute", top: -20, left: "50%", transform: "translateX(-50%)", fontSize: 10, color: BRAND.textMuted, whiteSpace: "nowrap" } }, "$" + d.target.toLocaleString())
+            ),
+            React.createElement("div", { style: { width: "35%", height: `${((d.revenue || d.arr || 0) / max) * 100}%`, background: BRAND.orange, borderRadius: "6px 6px 0 0", position: "relative", minHeight: 4 } },
+              React.createElement("span", { style: { position: "absolute", top: -20, left: "50%", transform: "translateX(-50%)", fontSize: 10, color: BRAND.orange, fontWeight: 700, whiteSpace: "nowrap" } }, "$" + (d.revenue || d.arr || 0).toLocaleString())
+            )
+          ),
+          React.createElement("div", { style: { fontSize: 12, color: BRAND.textMuted, fontWeight: 600, borderTop: "1px solid " + BRAND.orangeBorder, paddingTop: 6, width: "100%", textAlign: "center" } }, d.year)
+        ))
+      );
+    };
 
     // SVG Icon Library - Inline SVG Components
     const Icons = {
@@ -1526,31 +1542,7 @@
 
                 <SectionHeader icon={Icons.TrendingUp} title="Revenue Projections" />
                 <div className="chart-container">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={REVENUE_DATA}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={BRAND.orangeBorder} />
-                      <XAxis dataKey="year" stroke={BRAND.textMuted} />
-                      <YAxis stroke={BRAND.textMuted} />
-                      <Tooltip
-                        contentStyle={{
-                          background: BRAND.darkCard,
-                          border: `1px solid ${BRAND.orangeBorder}`,
-                          borderRadius: "4px",
-                          color: BRAND.text
-                        }}
-                      />
-                      <Bar dataKey="revenue" fill={BRAND.orange} name="Actual Revenue" radius={[8, 8, 0, 0]}>
-                        {REVENUE_DATA.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={BRAND.orange} />
-                        ))}
-                      </Bar>
-                      <Bar dataKey="target" fill={BRAND.orangeBorder} name="Target Revenue" radius={[8, 8, 0, 0]} opacity={0.5}>
-                        {REVENUE_DATA.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={BRAND.orangeBorder} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <CSSBarChart data={REVENUE_DATA} />
                 </div>
 
                 <SectionHeader icon={Icons.BarChart3} title="Annual Summary" />
