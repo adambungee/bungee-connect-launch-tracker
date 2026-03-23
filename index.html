@@ -9,7 +9,6 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
-  <script src="https://unpkg.com/lucide-react@0.383.0/dist/umd/lucide-react.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -919,7 +918,30 @@
   <script type="text/babel">
     const { useState, useMemo } = React;
     const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } = window.Recharts;
-    const { Rocket, Target, TrendingUp, Users, CheckCircle, AlertTriangle, ChevronDown, ChevronRight, DollarSign, Truck, Shield, BarChart3, Calendar, Zap, Globe, CheckSquare, Square, MessageSquare, X, Save } = window.lucideReact;
+
+    // SVG Icon Library - Inline SVG Components
+    const Icons = {
+      Rocket: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M4.5 16.5c-1.5-1.5-2-3.5-2-5.5 0 0 6-4 11-4s11 4 11 4c0 2-0.5 4-2 5.5"}), React.createElement('path', {d: "M12 8v8"}), React.createElement('path', {d: "M8 14h8"})),
+      Target: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "12", r: "10"}), React.createElement('circle', {cx: "12", cy: "12", r: "6"}), React.createElement('circle', {cx: "12", cy: "12", r: "2"})),
+      TrendingUp: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polyline', {points: "23 6 13.5 15.5 8.5 10.5 1 18"}), React.createElement('polyline', {points: "17 6 23 6 23 12"})),
+      Users: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"}), React.createElement('circle', {cx: "9", cy: "7", r: "4"}), React.createElement('path', {d: "M23 21v-2a4 4 0 0 0-3-3.87"}), React.createElement('path', {d: "M16 3.13a4 4 0 0 1 0 7.75"})),
+      CheckCircle: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M22 11.08V12a10 10 0 1 1-5.93-9.14"}), React.createElement('polyline', {points: "22 4 12 14.01 9 11.01"})),
+      AlertTriangle: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3.04h16.94a2 2 0 0 0 1.71-3.04L13.71 3.86a2 2 0 0 0-3.42 0z"}), React.createElement('line', {x1: "12", y1: "9", x2: "12", y2: "13"}), React.createElement('line', {x1: "12", y1: "17", x2: "12.01", y2: "17"})),
+      ChevronDown: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polyline', {points: "6 9 12 15 18 9"})),
+      ChevronRight: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polyline', {points: "9 18 15 12 9 6"})),
+      DollarSign: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('line', {x1: "12", y1: "1", x2: "12", y2: "23"}), React.createElement('path', {d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"})),
+      Truck: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('rect', {x: "1", y: "6", width: "22", height: "12"}), React.createElement('path', {d: "M1 18h4"}), React.createElement('path', {d: "M19 18h4"}), React.createElement('path', {d: "M19 6a2 2 0 0 0-2-2h-4"})),
+      Shield: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"})),
+      BarChart3: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('line', {x1: "12", y1: "3", x2: "12", y2: "13"}), React.createElement('line', {x1: "5", y1: "9", x2: "5", y2: "13"}), React.createElement('line', {x1: "19", y1: "5", x2: "19", y2: "13"}), React.createElement('rect', {x: "3", y: "14", width: "18", height: "6", rx: "2"})),
+      Calendar: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('rect', {x: "3", y: "4", width: "18", height: "18", rx: "2", ry: "2"}), React.createElement('line', {x1: "16", y1: "2", x2: "16", y2: "6"}), React.createElement('line', {x1: "8", y1: "2", x2: "8", y2: "6"}), React.createElement('line', {x1: "3", y1: "10", x2: "21", y2: "10"})),
+      Zap: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polygon', {points: "13 2 3 14 12 14 11 22 21 10 12 10 13 2"})),
+      Globe: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('circle', {cx: "12", cy: "12", r: "10"}), React.createElement('line', {x1: "2", y1: "12", x2: "22", y2: "12"}), React.createElement('path', {d: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"})),
+      CheckSquare: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('polyline', {points: "20 6 9 17 4 12"}), React.createElement('path', {d: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"})),
+      Square: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('rect', {x: "3", y: "3", width: "18", height: "18", rx: "2", ry: "2"})),
+      MessageSquare: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"})),
+      X: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('line', {x1: "18", y1: "6", x2: "6", y2: "18"}), React.createElement('line', {x1: "6", y1: "6", x2: "18", y2: "18"})),
+      Save: (props) => React.createElement('svg', {width: props.size || 20, height: props.size || 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"}, React.createElement('path', {d: "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"}), React.createElement('polyline', {points: "17 21 17 13 7 13 7 21"}), React.createElement('polyline', {points: "7 3 7 8 15 8"}))
+    };
 
     const BRAND = {
       orange: "#E8611A",
@@ -938,10 +960,10 @@
     };
 
     const MARKET_STATS = [
-      { icon: Truck, label: "Target Market", value: "50K+ Operators" },
-      { icon: DollarSign, label: "TAM", value: "$2.5B" },
-      { icon: Users, label: "Early Users", value: "500+" },
-      { icon: Rocket, label: "Growth Rate", value: "25% MoM" },
+      { icon: Icons.Truck, label: "Target Market", value: "50K+ Operators" },
+      { icon: Icons.DollarSign, label: "TAM", value: "$2.5B" },
+      { icon: Icons.Users, label: "Early Users", value: "500+" },
+      { icon: Icons.Rocket, label: "Growth Rate", value: "25% MoM" },
     ];
 
     const PHASES = [
@@ -1101,16 +1123,16 @@
     ];
 
     const EXISTING_FEATURES = [
-      { icon: Shield, text: "Safety Monitoring" },
-      { icon: Target, text: "Real-time Tracking" },
-      { icon: BarChart3, text: "Analytics Dashboard" },
-      { icon: Calendar, text: "Schedule Management" },
-      { icon: Users, text: "Team Collaboration" },
-      { icon: Globe, text: "Multi-location Support" },
-      { icon: Zap, text: "Mobile Integration" },
-      { icon: TrendingUp, text: "Performance Metrics" },
-      { icon: CheckCircle, text: "Status Notifications" },
-      { icon: Rocket, text: "Quick Deployment" },
+      { icon: Icons.Shield, text: "Safety Monitoring" },
+      { icon: Icons.Target, text: "Real-time Tracking" },
+      { icon: Icons.BarChart3, text: "Analytics Dashboard" },
+      { icon: Icons.Calendar, text: "Schedule Management" },
+      { icon: Icons.Users, text: "Team Collaboration" },
+      { icon: Icons.Globe, text: "Multi-location Support" },
+      { icon: Icons.Zap, text: "Mobile Integration" },
+      { icon: Icons.TrendingUp, text: "Performance Metrics" },
+      { icon: Icons.CheckCircle, text: "Status Notifications" },
+      { icon: Icons.Rocket, text: "Quick Deployment" },
     ];
 
     const CRITICAL_GAPS = [
@@ -1315,7 +1337,7 @@
             {/* Overview Tab */}
             {activeTab === "overview" && (
               <div>
-                <SectionHeader icon={Target} title="Market Opportunity" />
+                <SectionHeader icon={Icons.Target} title="Market Opportunity" />
                 <div className="grid grid-4">
                   {MARKET_STATS.map((stat, idx) => (
                     <StatCard key={idx} icon={stat.icon} label={stat.label} value={stat.value} />
@@ -1323,7 +1345,9 @@
                 </div>
 
                 <div className="callout">
-                  <AlertTriangle className="callout-icon" size={20} />
+                  <div className="callout-icon">
+                    <Icons.AlertTriangle size={20} />
+                  </div>
                   <div className="callout-content">
                     <div className="callout-title">Key Insight</div>
                     <div className="callout-text">
@@ -1332,7 +1356,7 @@
                   </div>
                 </div>
 
-                <SectionHeader icon={Calendar} title="Launch Phases" />
+                <SectionHeader icon={Icons.Calendar} title="Launch Phases" />
                 <div className="grid grid-2">
                   {phases.map((phase, idx) => (
                     <div
@@ -1354,7 +1378,7 @@
                   ))}
                 </div>
 
-                <SectionHeader icon={CheckCircle} title="Existing Features" />
+                <SectionHeader icon={Icons.CheckCircle} title="Existing Features" />
                 <div className="grid grid-3">
                   {EXISTING_FEATURES.map((feature, idx) => (
                     <div key={idx} className="feature-item">
@@ -1366,12 +1390,12 @@
                   ))}
                 </div>
 
-                <SectionHeader icon={AlertTriangle} title="Critical Gaps" />
+                <SectionHeader icon={Icons.AlertTriangle} title="Critical Gaps" />
                 <div className="grid grid-2">
                   {CRITICAL_GAPS.map((gap, idx) => (
                     <div key={idx} className="gap-item">
                       <div className="gap-icon">
-                        <X size={18} />
+                        <Icons.X size={18} />
                       </div>
                       <div className="gap-text">{gap.text}</div>
                     </div>
@@ -1400,10 +1424,9 @@
                         onClick={() => setExpandedPhase(expandedPhase === phaseIdx ? -1 : phaseIdx)}
                       >
                         <div className="accordion-title">
-                          <ChevronRight
-                            className="accordion-icon"
+                          <Icons.ChevronRight
                             size={20}
-                            style={{ transform: expandedPhase === phaseIdx ? "rotate(90deg)" : "rotate(0deg)" }}
+                            style={{ transform: expandedPhase === phaseIdx ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
                           />
                           <span>{phase.name}</span>
                           <span style={{ marginLeft: "auto", fontSize: "12px", color: BRAND.textMuted }}>
@@ -1419,7 +1442,7 @@
                                 className={`task-checkbox ${task.done ? "checked" : ""}`}
                                 onClick={() => toggleTask(phaseIdx, task.id)}
                               >
-                                {task.done && <CheckCircle size={16} />}
+                                {task.done && <Icons.CheckCircle size={16} />}
                               </div>
                               <div className="task-content">
                                 <div className={`task-text ${task.done ? "done" : ""}`}>{task.text}</div>
@@ -1443,11 +1466,11 @@
                                     />
                                     <div className="note-buttons">
                                       <button className="note-button save" onClick={saveNote}>
-                                        <Save size={14} style={{ display: "inline", marginRight: "4px" }} />
+                                        <Icons.Save size={14} style={{ display: "inline", marginRight: "4px" }} />
                                         Save
                                       </button>
                                       <button className="note-button cancel" onClick={cancelNote}>
-                                        <X size={14} style={{ display: "inline", marginRight: "4px" }} />
+                                        <Icons.X size={14} style={{ display: "inline", marginRight: "4px" }} />
                                         Cancel
                                       </button>
                                     </div>
@@ -1470,7 +1493,9 @@
             {activeTab === "monetization" && (
               <div>
                 <div className="callout">
-                  <DollarSign className="callout-icon" size={20} />
+                  <div className="callout-icon">
+                    <Icons.DollarSign size={20} />
+                  </div>
                   <div className="callout-content">
                     <div className="callout-title">Core Principle</div>
                     <div className="callout-text">
@@ -1479,7 +1504,7 @@
                   </div>
                 </div>
 
-                <SectionHeader icon={Target} title="Pricing Tiers" />
+                <SectionHeader icon={Icons.Target} title="Pricing Tiers" />
                 <div className="grid grid-3">
                   {PRICING_TIERS.map((tier, idx) => (
                     <div key={idx} className={`pricing-card ${tier.popular ? "popular" : ""}`}>
@@ -1490,7 +1515,7 @@
                       <div className="pricing-features">
                         {tier.features.map((feature, idx) => (
                           <div key={idx} className="pricing-feature">
-                            <CheckCircle size={16} />
+                            <Icons.CheckCircle size={16} />
                             <span>{feature}</span>
                           </div>
                         ))}
@@ -1499,7 +1524,7 @@
                   ))}
                 </div>
 
-                <SectionHeader icon={TrendingUp} title="Revenue Projections" />
+                <SectionHeader icon={Icons.TrendingUp} title="Revenue Projections" />
                 <div className="chart-container">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={REVENUE_DATA}>
@@ -1528,7 +1553,7 @@
                   </ResponsiveContainer>
                 </div>
 
-                <SectionHeader icon={BarChart3} title="Annual Summary" />
+                <SectionHeader icon={Icons.BarChart3} title="Annual Summary" />
                 <div className="grid grid-3">
                   {REVENUE_DATA.map((year, idx) => (
                     <div key={idx} className="summary-card">
@@ -1544,7 +1569,9 @@
             {activeTab === "kpis" && (
               <div>
                 <div className="callout">
-                  <Target className="callout-icon" size={20} />
+                  <div className="callout-icon">
+                    <Icons.Target size={20} />
+                  </div>
                   <div className="callout-content">
                     <div className="callout-title">Success Metrics</div>
                     <div className="callout-text">
@@ -1553,12 +1580,12 @@
                   </div>
                 </div>
 
-                <SectionHeader icon={TrendingUp} title="Key Performance Indicators" />
+                <SectionHeader icon={Icons.TrendingUp} title="Key Performance Indicators" />
                 <div className="grid grid-4">
                   {KPI_TARGETS.map((kpi, idx) => (
                     <div key={idx} className="kpi-card">
                       <div className="kpi-icon">
-                        <Zap size={20} />
+                        <Icons.Zap size={20} />
                       </div>
                       <div className="kpi-name">{kpi.name}</div>
                       <div className="kpi-value">{kpi.value}</div>
@@ -1567,12 +1594,12 @@
                   ))}
                 </div>
 
-                <SectionHeader icon={AlertTriangle} title="Risk Assessment" />
+                <SectionHeader icon={Icons.AlertTriangle} title="Risk Assessment" />
                 <div className="grid grid-2">
                   {RISKS.map((risk, idx) => (
                     <div key={idx} className="risk-card">
                       <div className="risk-title">
-                        <Shield size={18} />
+                        <Icons.Shield size={18} />
                         {risk.title}
                       </div>
                       <div className="risk-description">{risk.description}</div>
@@ -1591,7 +1618,9 @@
                 </div>
 
                 <div className="callout" style={{ marginTop: "30px", borderColor: BRAND.yellow + "40", background: "rgba(245, 158, 11, 0.08)" }}>
-                  <AlertTriangle className="callout-icon" size={20} style={{ color: BRAND.yellow }} />
+                  <div className="callout-icon" style={{ color: BRAND.yellow }}>
+                    <Icons.AlertTriangle size={20} />
+                  </div>
                   <div className="callout-content">
                     <div className="callout-title">Feature Creep Warning</div>
                     <div className="callout-text">
@@ -1611,7 +1640,8 @@
       );
     }
 
-    ReactDOM.render(<App />, document.getElementById("root"));
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
   </script>
 </body>
 </html>
