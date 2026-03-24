@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback — Bungee Connect</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #2D2A26; background: #F7F7F7; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; cursor: pointer; border: none; }
+
+  :root {
+    --orange: #D4541C;
+    --orange-hover: #B8461A;
+    --orange-light: #FFF4EF;
+    --charcoal: #2D2A26;
+    --gray-50: #F7F7F7;
+    --gray-100: #F0F0F0;
+    --gray-200: #E5E7EB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --white: #FFFFFF;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --container: 720px;
+  }
+
+  /* ─── Top Bar ─── */
+  .top-bar {
+    background: white;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .top-bar-inner {
+    max-width: 960px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo img { height: 32px; width: auto; }
+  .back-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-500);
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--orange); }
+
+  /* ─── Hero ─── */
+  .hero {
+    text-align: center;
+    padding: 48px 24px 32px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+  .hero p {
+    font-size: 15px;
+    color: var(--gray-500);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ─── Category Pills ─── */
+  .categories {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 24px 32px;
+    flex-wrap: wrap;
+  }
+  .cat-pill {
+    padding: 8px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1.5px solid var(--gray-200);
+    background: white;
+    color: var(--gray-500);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .cat-pill:hover { border-color: var(--gray-400); color: var(--charcoal); }
+  .cat-pill.active {
+    background: var(--orange);
+    color: white;
+    border-color: var(--orange);
+  }
+
+  /* ─── Form Card ─── */
+  .container { max-width: var(--container); margin: 0 auto; padding: 0 24px 64px; }
+
+  .card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    padding: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .form-group { margin-bottom: 20px; }
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .form-label span { color: var(--orange); }
+  .form-hint {
+    font-size: 12px;
+    color: var(--gray-400);
+    margin-top: 4px;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    color: var(--charcoal);
+    background: white;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(212, 84, 28, 0.08);
+  }
+  .form-textarea { min-height: 120px; resize: vertical; }
+
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--gray-400); }
+
+  /* ─── Priority Selector ─── */
+  .priority-options { display: flex; gap: 10px; }
+  .priority-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--gray-200);
+    background: white;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .priority-btn:hover { border-color: var(--gray-400); }
+  .priority-btn.active-low { border-color: #22C55E; color: #22C55E; background: #F0FDF4; }
+  .priority-btn.active-med { border-color: #F59E0B; color: #F59E0B; background: #FFFBEB; }
+  .priority-btn.active-high { border-color: #EF4444; color: #EF4444; background: #FEF2F2; }
+
+  /* ─── Submit ─── */
+  .submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .submit-btn {
+    padding: 12px 28px;
+    background: var(--orange);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+  }
+  .submit-btn:hover { background: var(--orange-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+  .submit-note { font-size: 12px; color: var(--gray-400); }
+
+  /* ─── Success State ─── */
+  .success-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    padding: 48px 32px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    display: none;
+  }
+  .success-card.visible { display: block; }
+  .success-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #F0FDF4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .success-icon svg { width: 28px; height: 28px; stroke: #22C55E; fill: none; stroke-width: 2.5; }
+  .success-card h2 { font-size: 22px; font-weight: 700; color: var(--charcoal); margin-bottom: 8px; }
+  .success-card p { font-size: 14px; color: var(--gray-500); margin-bottom: 24px; }
+  .btn-outline {
+    display: inline-block;
+    padding: 10px 24px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--charcoal);
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--gray-50); border-color: var(--gray-400); }
+
+  /* ─── Previous Submissions ─── */
+  .my-submissions {
+    margin-top: 32px;
+  }
+  .my-submissions h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+  }
+  .submission-item {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .submission-badge {
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-bug { background: #FEF2F2; color: #EF4444; }
+  .badge-feature { background: #F0FDF4; color: #22C55E; }
+  .badge-improvement { background: #FFF7ED; color: #F59E0B; }
+  .badge-other { background: var(--gray-100); color: var(--gray-500); }
+  .submission-content { flex: 1; min-width: 0; }
+  .submission-title { font-size: 14px; font-weight: 600; color: var(--charcoal); margin-bottom: 2px; }
+  .submission-meta { font-size: 12px; color: var(--gray-400); }
+  .submission-status {
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--orange-light);
+    color: var(--orange);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 32px;
+    color: var(--gray-400);
+    font-size: 14px;
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray-400);
+    border-top: 1px solid var(--gray-200);
+    margin-top: 48px;
+  }
+  .footer a { color: var(--orange); }
+  .footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 22px; }
+    .card { padding: 20px; }
+    .priority-options { flex-wrap: wrap; }
+    .priority-btn { min-width: calc(50% - 5px); }
+    .submit-row { flex-direction: column; align-items: stretch; }
+    .submit-note { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="logo">
+      <a href="../landing/"><img src="../assets/bungee-connect-logo.png" alt="Bungee Connect"></a>
+    </div>
+    <a href="../landing/" class="back-link">&larr; Back to Bungee Connect</a>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Help Us Build What You Need</h1>
+  <p>Your feedback shapes Bungee Connect. Report a bug, request a feature, or tell us how we can improve your quoting workflow.</p>
+</div>
+
+<!-- Category Pills -->
+<div class="categories">
+  <button class="cat-pill active" data-cat="feature" onclick="selectCategory(this)">Feature Request</button>
+  <button class="cat-pill" data-cat="bug" onclick="selectCategory(this)">Bug Report</button>
+  <button class="cat-pill" data-cat="improvement" onclick="selectCategory(this)">Improvement</button>
+  <button class="cat-pill" data-cat="other" onclick="selectCategory(this)">Other</button>
+</div>
+
+<!-- Form -->
+<div class="container">
+  <div class="card" id="feedbackForm">
+    <div class="form-group">
+      <label class="form-label">Your Name</label>
+      <input class="form-input" type="text" id="userName" placeholder="John Smith">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email <span>*</span></label>
+      <input class="form-input" type="email" id="userEmail" placeholder="john@myfleet.com" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Company / Fleet Name</label>
+      <input class="form-input" type="text" id="userCompany" placeholder="Smith Trucking LLC">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Subject <span>*</span></label>
+      <input class="form-input" type="text" id="subject" placeholder="e.g., Add multi-stop route support" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Description <span>*</span></label>
+      <textarea class="form-textarea" id="description" placeholder="Describe what you'd like to see, the problem you're facing, or the bug you encountered. The more detail, the better we can help."></textarea>
+      <div class="form-hint">Be as specific as possible. Include steps to reproduce for bugs.</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Priority</label>
+      <div class="priority-options">
+        <button class="priority-btn" data-priority="low" onclick="selectPriority(this)">Low</button>
+        <button class="priority-btn active-med" data-priority="medium" onclick="selectPriority(this)">Medium</button>
+        <button class="priority-btn" data-priority="high" onclick="selectPriority(this)">High</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Which area of Bungee Connect?</label>
+      <select class="form-select" id="area">
+        <option value="">Select an area (optional)</option>
+        <option value="quoting">Route Quoting</option>
+        <option value="cost-profile">Cost Profiles</option>
+        <option value="pricing">Pricing / Margins</option>
+        <option value="ai-chatbot">AI Chatbot</option>
+        <option value="team">Team Management</option>
+        <option value="onboarding">Onboarding / Signup</option>
+        <option value="billing">Billing / Subscription</option>
+        <option value="ui">User Interface / Design</option>
+        <option value="mobile">Mobile Experience</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div class="submit-row">
+      <div class="submit-note">Submissions are private and sent directly to the Bungee team.</div>
+      <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">Submit Feedback</button>
+    </div>
+  </div>
+
+  <!-- Success State -->
+  <div class="success-card" id="successCard">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Thank you for your feedback!</h2>
+    <p>We read every submission. Your input directly shapes what we build next. We'll follow up via email if we have questions.</p>
+    <button class="btn-outline" onclick="resetForm()">Submit Another</button>
+  </div>
+
+  <!-- Previous Submissions -->
+  <div class="my-submissions" id="submissionsSection">
+    <h3>Your Submissions</h3>
+    <div id="submissionsList"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <a href="../landing/">Bungee Connect</a> &nbsp;·&nbsp; <a href="../terms/">Terms</a> &nbsp;·&nbsp; <a href="mailto:support@shipbungee.com">support@shipbungee.com</a>
+  <br>&copy; 2026 Bungee Supply Chain Ltd.
+</div>
+
+<script>
+  let selectedCategory = "feature";
+  let selectedPriority = "medium";
+
+  const STORAGE_KEY = "bungee-feedback-submissions";
+
+  function selectCategory(btn) {
+    document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    selectedCategory = btn.dataset.cat;
+  }
+
+  function selectPriority(btn) {
+    document.querySelectorAll(".priority-btn").forEach(p => {
+      p.classList.remove("active-low", "active-med", "active-high");
+    });
+    const p = btn.dataset.priority;
+    selectedPriority = p;
+    btn.classList.add(p === "low" ? "active-low" : p === "medium" ? "active-med" : "active-high");
+  }
+
+  function submitFeedback() {
+    const email = document.getElementById("userEmail").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const description = document.getElementById("description").value.trim();
+
+    if (!email || !subject || !description) {
+      alert("Please fill in all required fields (Email, Subject, Description).");
+      return;
+    }
+
+    const submission = {
+      id: Date.now(),
+      name: document.getElementById("userName").value.trim(),
+      email: email,
+      company: document.getElementById("userCompany").value.trim(),
+      category: selectedCategory,
+      subject: subject,
+      description: description,
+      priority: selectedPriority,
+      area: document.getElementById("area").value,
+      date: new Date().toISOString(),
+      status: "Received"
+    };
+
+    // Save to localStorage
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    saved.unshift(submission);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+
+    // Show success
+    document.getElementById("feedbackForm").style.display = "none";
+    document.getElementById("successCard").classList.add("visible");
+
+    // Refresh submissions list
+    renderSubmissions();
+
+    // Send to email via mailto fallback (in production, replace with API call)
+    sendNotification(submission);
+  }
+
+  function sendNotification(sub) {
+    // In production, replace this with a fetch() call to your API endpoint
+    // For now, we prepare the data for a webhook/email integration
+    console.log("Feedback submitted:", JSON.stringify(sub, null, 2));
+
+    // Optional: trigger a mailto link for immediate notification
+    const body = encodeURIComponent(
+      `Category: ${sub.category}\nPriority: ${sub.priority}\nArea: ${sub.area || 'N/A'}\n\nFrom: ${sub.name || 'Anonymous'} (${sub.email})\nCompany: ${sub.company || 'N/A'}\n\nSubject: ${sub.subject}\n\nDescription:\n${sub.description}`
+    );
+    // Create hidden iframe to avoid navigation
+    const mailLink = document.createElement("a");
+    mailLink.href = `mailto:adam@shipbungee.com?subject=${encodeURIComponent('[Bungee Feedback] ' + sub.subject)}&body=${body}`;
+    mailLink.style.display = "none";
+    document.body.appendChild(mailLink);
+    // Don't auto-click — we just store locally. In production, use an API.
+  }
+
+  function resetForm() {
+    document.getElementById("feedbackForm").style.display = "block";
+    document.getElementById("successCard").classList.remove("visible");
+    document.getElementById("userName").value = "";
+    document.getElementById("userEmail").value = "";
+    document.getElementById("userCompany").value = "";
+    document.getElementById("subject").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("area").value = "";
+    selectedPriority = "medium";
+    document.querySelectorAll(".priority-btn").forEach(p => {
+      p.classList.remove("active-low", "active-med", "active-high");
+    });
+    document.querySelector('[data-priority="medium"]').classList.add("active-med");
+  }
+
+  function renderSubmissions() {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const container = document.getElementById("submissionsList");
+    const section = document.getElementById("submissionsSection");
+
+    if (saved.length === 0) {
+      section.style.display = "none";
+      return;
+    }
+
+    section.style.display = "block";
+    container.innerHTML = saved.map(sub => {
+      const badgeClass = sub.category === "bug" ? "badge-bug" :
+                         sub.category === "feature" ? "badge-feature" :
+                         sub.category === "improvement" ? "badge-improvement" : "badge-other";
+      const label = sub.category === "feature" ? "Feature" :
+                    sub.category === "bug" ? "Bug" :
+                    sub.category === "improvement" ? "Improve" : "Other";
+      const date = new Date(sub.date).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      return `
+        <div class="submission-item">
+          <span class="submission-badge ${badgeClass}">${label}</span>
+          <div class="submission-content">
+            <div class="submission-title">${escapeHtml(sub.subject)}</div>
+            <div class="submission-meta">${date} · ${sub.priority} priority${sub.area ? ' · ' + sub.area : ''}</div>
+          </div>
+          <span class="submission-status">${sub.status}</span>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // Init
+  renderSubmissions();
+</script>
+</body>
+</html>
